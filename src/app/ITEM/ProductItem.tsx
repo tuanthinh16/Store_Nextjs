@@ -1,4 +1,4 @@
-
+'use client'
 import * as React from 'react'
 import AspectRatio from '@mui/joy/AspectRatio';
 import Button from '@mui/joy/Button';
@@ -42,7 +42,7 @@ const ProductItem = ({product}:any) => {
                 <img src={row && row.imageUrl && row.imageUrl[0] ? row.imageUrl[0] : 'fallback_image_url'} width={300}height={300} alt='img'/>
             </AspectRatio>
             <div>
-                
+            
                 <Typography level="body-sm">{row.description}</Typography>
                 <div style={{display:'flex'}}>
                     <p style={{paddingTop:7 ,display:'flex'}}>{"("}{row['rating']?.['count']}{")"}{row['rating']?.['rate']}<StarIcon fontSize='small'style={{color:'rgb(187, 149, 26)'}}/></p>

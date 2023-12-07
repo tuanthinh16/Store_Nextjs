@@ -14,13 +14,22 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Paper } from '@mui/material';
-
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { Alert, AspectRatio, IconButton, LinearProgress, Snackbar } from '@mui/joy';
+import { Check, Close } from '@mui/icons-material';
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 const Register = () => {
+    const [open, setOpen] = React.useState(false);
+    const route = useRouter();
     const[data,setData] = React.useState({username:'',email:'',password:'',name:{firstname:'',lastname:''},phone:''})
+    const [registerAlert, setRegisterAlert] = React.useState({
+        color: '',
+        value: ''
+    });
     React.useEffect(()=>{
         document.title = "Bunney | Register";
     },[]);
@@ -37,12 +46,59 @@ const Register = () => {
         }));
     };
     const handleSubmit = () => {
-        
+        const formData = {
+            username: data.username,
+            email: data.email,
+            password: data.password,
+            phone: data.phone,
+            name: {
+                firstname: data.name.firstname,
+                lastname: data.name.lastname
+            }
+        };
+        const url="/api/user";
+        axios({
+            method:"post",
+            url: url,
+            data:formData,
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then(response =>{
+            if (response.status === 200) {
+                setRegisterAlert({ color: 'success', value: 'Create account successfully' });
+            } else if (response.status === 504) {
+                setRegisterAlert({ color: 'danger', value: 'Username has been existed' });
+                setOpen(true);
+            } else {
+                setRegisterAlert({ color: 'warning', value: 'Error when creating account' });
+            }
+        })
+        .catch(error=>{
+            console.error("Err: "+error)
+        });  
         
     };
 
     return (
     <ThemeProvider theme={defaultTheme} >
+        {registerAlert.value && (
+        <RegisterAlert color={registerAlert.color} value={registerAlert.value} />
+        )}
+        {/* <RegisterAlert color= 'danger' value= 'Username has been existed' /> */}
+                <Snackbar
+                    autoHideDuration={4000}
+                    open={false}
+                    variant="soft"
+                    color="success"
+                    onClose={(event, reason) => {
+                        if (reason === 'clickaway') {
+                            return;
+                        }
+                        setOpen(false);
+                    }}
+                    >
+                    Create successful
+                </Snackbar>
         <Container component="main" maxWidth="sm" style={{display:'flex',maxWidth:'80%',justifyContent:'center',alignContent:'center',alignItems:'center',marginLeft:'3rem'}}>
             <CssBaseline />
             <Box
@@ -139,7 +195,7 @@ const Register = () => {
                 <Button
                 // type="submit"
                 fullWidth
-                variant="contained"
+                variant="outlined"
                 sx={{ mt: 3, mb: 2 }}
                 onClick={handleSubmit}
                 >
@@ -160,4 +216,60 @@ const Register = () => {
     );
 }
 
-export default Register
+export default Register;
+const RegisterAlert = ({color,value}:any)=>{
+    return (
+        <Alert
+        size="lg"
+        color={color}
+        variant="solid"
+        invertedColors
+        startDecorator={
+            <AspectRatio
+                variant="solid"
+                ratio="1"
+                sx={{
+                minWidth: 40,
+                borderRadius: '50%',
+                boxShadow: '0 2px 12px 0 rgb(0 0 0/0.2)',
+                }}
+            >
+                <div>
+                <Check fontSize="medium" />
+                </div>
+            </AspectRatio>
+            }
+            endDecorator={
+            <IconButton
+                variant="plain"
+                sx={{
+                '--IconButton-size': '32px',
+                transform: 'translate(0.5rem, -0.5rem)',
+                }}
+            >
+                <Close />
+            </IconButton>
+            }
+            sx={{ alignItems: 'flex-start', overflow: 'hidden' }}
+        >
+            <div>
+            <Typography >{color}</Typography>
+            <Typography >
+                {value}
+            </Typography>
+            </div>
+            <LinearProgress
+                variant="solid"
+                color="success"
+                value={40}
+                sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    borderRadius: 0,
+                }}
+            />
+        </Alert>
+    )
+}

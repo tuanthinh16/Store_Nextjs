@@ -9,14 +9,18 @@ import Sheet from '@mui/joy/Sheet';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
 import { useRouter } from 'next/navigation';
+import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next';
+import jwt from 'jsonwebtoken';
+import { signOut, useSession } from "next-auth/react";
 
-/**
- * Design credit: https://flutter.dev/
- */
+
 
 export default function ColorInversionMarketing() {
     const route = useRouter();
     const [color, setColor] = React.useState<ColorPaletteProp>('primary');
+    const token = getCookie('token')||'';
+    const { data: session }: any = useSession();
+    // console.log("session",session);
     return (
         <Sheet
         variant="solid"
@@ -34,9 +38,10 @@ export default function ColorInversionMarketing() {
         }}
         >
         <Box sx={{ zIndex: 1, position: 'relative' }}>
-            <Typography level="h2">Get started</Typography>
+            <Typography sx={{ mt: 0.5, mb: 2 ,fontWeight:'bold'}}>Hi {session?.user?.name['firstname']}{" "}{session?.user?.name['lastname']}</Typography>
             <Typography sx={{ mt: 0.5, mb: 2 }}>
-                Make your life become beautiful
+                {'Make your life become more beautiful'}
+                {"Khám phá thế giới thời trang tại cửa hàng của chúng tôi, nơi bạn sẽ bắt gặp sự đa dạng với những mẫu giày và đồ áo đi hàng đầu. Từ phong cách đơn giản đến năng động, chúng tôi cam kết mang đến cho bạn những trải nghiệm mua sắm không giới hạn với chất lượng và phong cách độc đáo."}
             </Typography>
             <Box
             sx={{
@@ -47,7 +52,9 @@ export default function ColorInversionMarketing() {
                 '& > *': { flexGrow: 1, fontWeight: 'lg' },
             }}
             >
-            <Button sx={{ minWidth: 120 }} onClick={()=>route.push('/user/Login')}>Login</Button>
+            {!session &&(
+                <Button sx={{ minWidth: 120 }} onClick={()=>route.push('/user/Login')}>Login</Button>
+            )}
             <Button
                 variant="plain"
                 endDecorator={<ArrowForwardIcon />}

@@ -23,6 +23,7 @@ import logo from '../../../public/logo.png';
 import { Badge } from '@mui/joy';
 const pages = ['Products', 'Categories', 'Wallet'];
 import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next';
+import { signOut, useSession } from "next-auth/react";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -103,7 +104,7 @@ const Header = () => {
     const handleClickUser = (key:any)=>{
         route.push('/user/'+key);
     }
-    
+    const { data: session }: any = useSession();
     return (
         <MyAppBar position="fixed">
         <Container >
@@ -238,7 +239,7 @@ const Header = () => {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                 >
-                    
+                    <Typography style={{padding:7,color:'green'}}>{session?.user?.email}</Typography>
                     <MenuItem  onClick={()=>handleClickUser('Profile')}>
                         <Typography textAlign="center">Profile</Typography>
                     </MenuItem>
@@ -248,8 +249,8 @@ const Header = () => {
                     <MenuItem onClick={()=>handleClickUser('Wallet')}>
                         <Typography textAlign="center">Wallet</Typography>
                     </MenuItem>
-                    {token?(
-                        <MenuItem onClick={()=>handleClickUser('Logout')}>
+                    {session?(
+                        <MenuItem onClick={()=>signOut()}>
                             <Typography textAlign="center">Logout</Typography>
                         </MenuItem>
                         

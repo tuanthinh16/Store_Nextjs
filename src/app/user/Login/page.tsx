@@ -16,41 +16,40 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 const defaultTheme = createTheme();
 const LoginFrom = ()=>{
+
     const route = useRouter();
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const { data: session, status: sessionStatus } = useSession();
+    React.useEffect(() => {
+        if (sessionStatus === "authenticated") {
+            route.replace("/");
+        }
+    }, [sessionStatus, route]);
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const _data = new FormData(event.currentTarget);
-        const url="/api/user/login";
-        axios({
-            method:"post",
-            url: url,
-            data:_data,
-            headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then(response =>{
-            if(response.status===200){
-                console.log('login thanh cong, token',response.data)
-                if(response.data.data.username === 'admin'){
-                    route.replace('/adminpage')
-                }
-                else{
-                    route.replace('/')
-                }
-                
-            }
-        })
-        .catch(error=>{
-            console.error("Err: "+error)
-        });  
+        const username = _data.get('username');
+        const password = _data.get('password');
+        const res = await signIn("credentials", {
+            redirect: false,
+            username,
+            password,
+        });
+        if (res?.error) {
+            console.log("error")
+        if (res?.url) {
+            route.replace("/");
+            
+            
+        }
+        }
+        console.log("response ",res)
     }  
-    React.useEffect(()=>{
-        document.title = "Bunney | Login";
-    },[]);
     return (
+        sessionStatus !== "authenticated"&&(
         <ThemeProvider theme={defaultTheme}>
         <Grid container component="main" sx={{ height: '100vh' }}>
             <CssBaseline />
@@ -109,8 +108,9 @@ const LoginFrom = ()=>{
                 <Button
                     type="submit"
                     fullWidth
-                    variant="contained"
+                    variant="outlined"
                     sx={{ mt: 3, mb: 2 }}
+
                 >
                     Sign In
                 </Button>
@@ -132,6 +132,7 @@ const LoginFrom = ()=>{
             </Grid>
         </Grid>
         </ThemeProvider>
+        )
     )
 }
 export default LoginFrom;

@@ -12,8 +12,10 @@ import Card from '@mui/joy/Card';
 import Skeleton from '@mui/joy/Skeleton';
 import Typography from '@mui/joy/Typography';
 import { CssVarsProvider, extendTheme } from '@mui/joy'
+import { useSession } from 'next-auth/react'
 
 export default function Home() {
+  const { data: session }: any = useSession();
   const [product,setProduct] = React.useState([]);
   const [loading,setLoading] = React.useState(true);
   const range = 10;
@@ -31,7 +33,7 @@ export default function Home() {
           console.error("Err: "+error)
       })
       .finally(() => {
-        setLoading(false); // Kết thúc loading dù có lỗi hay không
+        setLoading(false);
       });
   }     
 

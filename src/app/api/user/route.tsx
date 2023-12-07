@@ -25,19 +25,44 @@ export async function GET(request:Request) {
 export async function POST(request:NextRequest) {
     const user = await request.formData();
     try {
-        const _data = {
+        
+        const data = {
             "collection": "users",
             "database": "FirstApi",
             "dataSource": "RustData",
-            "document": user
+            "filter":{
+                "username": user.get('username'),
+            }
         };
         
-        const userData = await fetchData('https://ap-southeast-1.aws.data.mongodb-api.com/app/data-sdyzv/endpoint/data/v1/action/insertOne', 'post', _data);
-        if(userData){
-            return NextResponse.json({data:userData},{status:200})
+        const isExited = await fetchData('https://ap-southeast-1.aws.data.mongodb-api.com/app/data-sdyzv/endpoint/data/v1/action/findOne', 'post', data);
+        if (!isExited){
+            const _data = {
+                "collection": "users",
+                "database": "FirstApi",
+                "dataSource": "RustData",
+                "document": {
+                    'username': user.get('username'),
+                    'email': user.get('email'),
+                    'password': user.get('password'),
+                    'phone': user.get('phone'),
+                    'name': {
+                        'firstname':user.get('name[firstname]'),
+                        'lastname':user.get('name[lastname]')
+                    }
+                }
+            };
+            
+            const userData = await fetchData('https://ap-southeast-1.aws.data.mongodb-api.com/app/data-sdyzv/endpoint/data/v1/action/insertOne', 'post', _data);
+            if(userData){
+                return NextResponse.json({data:userData},{status:200})
+            }else{
+                return NextResponse.json({err:"Error when insert user"},{status:400})
+            }
         }else{
-            return NextResponse.json({err:"Error when insert user"},{status:200})
+            return NextResponse.json({err:"Username has been existed"},{status:504})
         }
+        
     } catch (error) {
         console.error('Error insert user :', error);
         return NextResponse.json({err:error},{status:200})
@@ -56,7 +81,16 @@ export async function PUT(request:NextRequest){
                 "_id": { "$oid": _id }
             },
             "update": {
-                "$set": user
+                "$set": {
+                    'username': user.get('username'),
+                    'email': user.get('email'),
+                    'password': user.get('password'),
+                    'phone': user.get('phone'),
+                    'name': {
+                        'firstname':user.get('name[firstname]'),
+                        'lastname':user.get('name[lastname]')
+                    }
+                }
             }
         };
         const userData = await fetchData('https://ap-southeast-1.aws.data.mongodb-api.com/app/data-sdyzv/endpoint/data/v1/action/updateOne', 'post', data);
