@@ -60,7 +60,7 @@ export async function POST(request:NextRequest) {
                 return NextResponse.json({err:"Error when insert user"},{status:400})
             }
         }else{
-            return NextResponse.json({err:"Username has been existed"},{status:504})
+            return NextResponse.json({err:"Username has been existed"},{status:409})
         }
         
     } catch (error) {

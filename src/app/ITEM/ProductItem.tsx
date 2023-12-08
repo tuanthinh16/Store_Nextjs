@@ -1,16 +1,17 @@
 'use client'
 import * as React from 'react'
+import styled from 'styled-components';
+import { useRouter } from 'next/navigation';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
-import IconButton from '@mui/joy/IconButton';
+import CardOverflow from '@mui/joy/CardOverflow';
+import Chip from '@mui/joy/Chip';
+import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
-import Image from 'next/image';
-import styled from 'styled-components';
-import { useRouter } from 'next/navigation';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import StarRating from './Rating';
-import StarIcon from '@mui/icons-material/Star';
 
 const MyButton = styled(Button)`
     &&:hover{
@@ -26,57 +27,54 @@ const ProductItem = ({product}:any) => {
         setQuantity(newQuantity);
     };
     const route = useRouter();
+    console.log(product)
     return (
         <>
         {product?.map((row:any,index:number)=>(
-            <Card
-            color="primary"
-            invertedColors={false}
-            size="lg"
-            variant="soft"
-            sx={{ width: 300 , margin: 2}}
-            key={index}
-            >
-            <Typography level="title-lg">{row.title}</Typography>
-            <AspectRatio minHeight="120px" maxHeight="200px">
-                <img src={row && row.imageUrl && row.imageUrl[0] ? row.imageUrl[0] : 'fallback_image_url'} width={300}height={300} alt='img'/>
-            </AspectRatio>
-            <div>
-            
-                <Typography level="body-sm">{row.description}</Typography>
-                <div style={{display:'flex'}}>
-                    <p style={{paddingTop:7 ,display:'flex'}}>{"("}{row['rating']?.['count']}{")"}{row['rating']?.['rate']}<StarIcon fontSize='small'style={{color:'rgb(187, 149, 26)'}}/></p>
-                    <StarRating initialRating={row['rating']?.['rate']}/> 
-                </div>
-                <IconButton
-                aria-label="bookmark Bahamas Islands"
-                variant="plain"
-                color="neutral"
-                size="sm"
-                sx={{ position: 'absolute', top: '0.875rem', right: '0.5rem' }}
+            <Card sx={{ width: 320, maxWidth: '100%', boxShadow: 'lg',marginLeft:5 }} key={index}>
+                <CardOverflow>
+                <AspectRatio sx={{ minWidth: 200 }}>
+                    <img
+                    src={row.imageUrl[0]}
+                    loading="lazy"
+                    alt=""
+                    />
+                </AspectRatio>
+                </CardOverflow>
+                <CardContent>
+                <Typography level="body-xs">{row.category}</Typography>
+                <Link
+                    href={'/Products/' + row._id}
+                    fontWeight="md"
+                    color="neutral"
+                    textColor="text.primary"
+                    overlay
+                    endDecorator={<ArrowOutwardIcon />}
                 >
-                love
-                </IconButton>
-            </div>
-            <CardContent orientation="horizontal">
-                <div>
-                <Typography level="body-xs">Price:</Typography>
-                <Typography fontSize="lg" fontWeight="lg">
-                    {row.price}{".000đ"}
+                    {row.title}
+                </Link>
+        
+                <Typography
+                    level="title-lg"
+                    sx={{ mt: 1, fontWeight: 'xl' }}
+                    endDecorator={
+                    <Chip component="span" size="sm" variant="soft" color="success">
+                        Lowest price
+                    </Chip>
+                    }
+                >
+                    {row.price}{'.000đ'}
                 </Typography>
-                
-                </div>
-                <MyButton
-                variant="soft"
-                size="md"
-                color="primary"
-                aria-label="Explore Bahamas Islands"
-                sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600,width:'45%' }}
-                onClick={()=>route.push("/Products/"+row['_id'])}
-                >
-                See
-                </MyButton>
-            </CardContent>
+                <Typography level="body-sm">
+                    (Only <b>7</b> left in stock!)
+                    <StarRating initialRating={row['rating']?.['rate']}/>
+                </Typography>
+                </CardContent>
+                <CardOverflow>
+                <Button variant="soft" color="danger" size="lg">
+                    Add to cart
+                </Button>
+                </CardOverflow>
             </Card>
         ))}
         </>

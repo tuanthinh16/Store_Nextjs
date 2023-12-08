@@ -3,7 +3,7 @@ import { Spinner } from 'react-bootstrap';
 import Placeholder from 'react-bootstrap/Placeholder';
 const Loading = () => {
     return (
-        <div style={{margin:'20rem 10rem'}}>
+        <div style={{padding:'20rem 20rem'}}>
             <>
             <Spinner animation="border" variant="primary" />
             <Spinner animation="border" variant="secondary" />

@@ -11,19 +11,20 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { InputBase } from '@mui/material';
+import { InputBase, Paper } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import logo from '../../../public/logo.png';
-import { Badge } from '@mui/joy';
+import { Badge, Button, DialogTitle, Drawer, ModalClose } from '@mui/joy';
 const pages = ['Products', 'Categories', 'Wallet'];
 import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next';
 import { signOut, useSession } from "next-auth/react";
+import CartItem from '../ITEM/CartItem';
+import {cart} from '../models/cartData';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -105,6 +106,8 @@ const Header = () => {
         route.push('/user/'+key);
     }
     const { data: session }: any = useSession();
+    const[openCart, setOpenCart] = React.useState(false);
+    
     return (
         <MyAppBar position="fixed">
         <Container >
@@ -215,8 +218,19 @@ const Header = () => {
                 
                 <Box sx={{ flexGrow: 0 }}>
                 <Badge size='lg' sx={{marginRight:5}}>
-                    <Typography fontSize="xl">🛒</Typography>
+                    <Typography fontSize="xl">
+                        <Button style={{borderRadius:'25px'}} onClick={() => setOpenCart(true)} >🛒</Button>
+                    </Typography>
+                    <Box sx={{ display: 'flex' }}>
+                        <Drawer open={openCart} onClose={() => setOpenCart(false)} anchor="right" size="sm" sx={{position:'relative'}}>
+                            <ModalClose />
+                            <DialogTitle level='h2'> My Cart</DialogTitle>
+                            <CartItem cartItem={cart}/>
+                            
+                        </Drawer>
+                    </Box>
                 </Badge>
+                
                 <Tooltip title="Open settings">
                     
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

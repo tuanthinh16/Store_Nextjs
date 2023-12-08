@@ -4,16 +4,44 @@ import React, { useState } from 'react'
 import { Button, Container, FloatingLabel, Form, Modal, Table } from 'react-bootstrap'
 import { makeUploadRequest } from './uploadImage';
 import Spinner from 'react-bootstrap/Spinner';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import toast from '../Toast';
+import AlertVariousStates from '../Toast';
+import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/navigation';
+
+
+
 
 const ListProduct = ({product}:any) => {
+    const route = useRouter();
     const [showadd,setShowadd] = useState(false);
+    const [showDel,setShowDel] = useState(false);
+    const [confirm,setConfirm] = useState(false);
+    const {enqueueSnackbar} = useSnackbar();
     console.log("Data product: ",product)
     let count = 1;
     const onClickAdd =()=>{
         setShowadd(true);
     }
+    const [showToast, setShowToast] = useState(false);
+    const onDelete = (_id:string)=>{
+        const url="/api/product?id="+_id;
+        axios.delete(url)
+        .then(response =>{
+            route.replace('/adminpage');
+            enqueueSnackbar('Delete product success',{variant:'success'})
+        })
+        .catch(error=>{
+            enqueueSnackbar('Delete product not complete',{variant:'error'})
+            console.error("Err: "+error)
+        });
+        
+    }
     return (
         <Container>
+            {showToast&&(<AlertVariousStates title ="addsuccess" color='success'/>)}
             <div style={{display:'flex',position:'relative'}}>
                 <h3>Product List</h3>
                 <div style={{position:'absolute',right:'3rem'}}>
@@ -51,7 +79,7 @@ const ListProduct = ({product}:any) => {
                             <td>{row['rating']?.['rate']}</td>
                             <td colSpan={2}>
                                 <Button variant='outlined'>Edit</Button>
-                                <Button variant='outlined'>Delete</Button>
+                                <Button variant='outlined' onClick={()=> onDelete(row._id)}>Delete</Button>
                             </td>
                         </tr>
                     ))}
@@ -77,6 +105,7 @@ const ListProduct = ({product}:any) => {
 export default ListProduct;
 
 const AddProduct = ()=>{
+    const {enqueueSnackbar} = useSnackbar();
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [cate,setCate] = React.useState<any[]>([]);
     React.useEffect(()=>{
@@ -129,13 +158,13 @@ const AddProduct = ()=>{
         setProduct((prev)=>({...prev,[_key]:e.target.value}));
     }
     const [uploaded,setUploaded] = useState(false);
-
+    const route = useRouter();
     const onAdd = async () => {
             const Fdata = new FormData();
             Fdata.append('title',product.title);
             Fdata.append('description',product.description);
             Fdata.append('price',product.price);
-            Fdata.append('cate',product.category);
+            Fdata.append('category',product.category);
             Fdata.append('imageUrl',JSON.stringify(fileName));
             Fdata.append('rating',JSON.stringify(product.rating))
             
@@ -149,7 +178,9 @@ const AddProduct = ()=>{
             })
             .then(response =>{
                 if(response.status===200){
+                    enqueueSnackbar('Add product success',{variant:'success'});
                     console.log("add thanh cong",response.data);
+                    route.replace('/adminpage');
                 }
             })
             .catch(error=>{
@@ -188,14 +219,14 @@ const AddProduct = ()=>{
                 <Form.Label>Image Product</Form.Label>
                 <Form.Control type="file" multiple  onChange={handleFileChange}/>
                 {selectedFiles.length > 0 && (
-                    <div>
+                    <Container>
                     <strong>Selected Files:</strong>
                     <ul>
                         {Array.from(selectedFiles).map((file, index) => (
                         <li key={index}>{file['name']}</li>
                         ))}
                     </ul>
-                    </div>
+                    </Container>
                 )}
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -206,7 +237,9 @@ const AddProduct = ()=>{
                 {uploaded?(
                     <Button variant='success' style={{width:'30%',margin:'auto'}} onClick={onAdd}>ADD</Button>
                 ):(
-                    <Spinner animation="border" variant="warning" />
+                    <>
+                    <Spinner animation="border" variant="warning" />{'uploading image'}
+                    </>
                 )}
             </Form.Group>
             </Form>

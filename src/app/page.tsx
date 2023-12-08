@@ -13,6 +13,7 @@ import Skeleton from '@mui/joy/Skeleton';
 import Typography from '@mui/joy/Typography';
 import { CssVarsProvider, extendTheme } from '@mui/joy'
 import { useSession } from 'next-auth/react'
+import { SnackbarProvider } from 'notistack'
 
 export default function Home() {
   const { data: session }: any = useSession();
@@ -38,7 +39,7 @@ export default function Home() {
   }     
 
   return (
-
+    <SnackbarProvider maxSnack={3}>
     <Container style={{maxWidth:'100%'}}>
       <ColorInversionMarketing/>
       <div style={{display:'flex',flexWrap:'wrap',marginTop:50}}>
@@ -49,6 +50,7 @@ export default function Home() {
       )}
       </div>
     </Container>
+    </SnackbarProvider>
   )
 }
 const theme = extendTheme({

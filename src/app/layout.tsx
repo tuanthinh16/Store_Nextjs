@@ -27,6 +27,7 @@ export default async function RootLayout({
     <html lang="en">
       
       <body className={inter.className}>
+      
         <SessionProvider session={session} >
           <Header/>
           <div style={{marginTop:"7rem",marginBottom:'3rem'}}>

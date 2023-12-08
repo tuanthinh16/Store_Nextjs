@@ -18,13 +18,18 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 
+import 'dotenv/config'
+import { toast } from 'react-toastify';
+import { useSnackbar } from 'notistack';
+
 const defaultTheme = createTheme();
 const LoginFrom = ()=>{
-
+    const {enqueueSnackbar} = useSnackbar();
     const route = useRouter();
     const { data: session, status: sessionStatus } = useSession();
     React.useEffect(() => {
         if (sessionStatus === "authenticated") {
+            toast.success("Login Successfully",{position:toast.POSITION.BOTTOM_CENTER});
             route.replace("/");
         }
     }, [sessionStatus, route]);
@@ -41,13 +46,15 @@ const LoginFrom = ()=>{
         if (res?.error) {
             console.log("error")
         if (res?.url) {
+            enqueueSnackbar("Login success",{variant:'success'});
             route.replace("/");
             
             
         }
         }
         console.log("response ",res)
-    }  
+    } 
+    // console.log("process.env.CLIENT_ID",process.env.CLIENT_ID as string) 
     return (
         sessionStatus !== "authenticated"&&(
         <ThemeProvider theme={defaultTheme}>
@@ -129,6 +136,7 @@ const LoginFrom = ()=>{
                 {/* <Copyright sx={{ mt: 5 }} /> */}
                 </Box>
             </Box>
+            <Button onClick={()=>signIn("google")}>Google</Button>
             </Grid>
         </Grid>
         </ThemeProvider>

@@ -18,6 +18,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { Alert, AspectRatio, IconButton, LinearProgress, Snackbar } from '@mui/joy';
 import { Check, Close } from '@mui/icons-material';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -25,6 +26,7 @@ const defaultTheme = createTheme();
 const Register = () => {
     const [open, setOpen] = React.useState(false);
     const route = useRouter();
+    const {enqueueSnackbar} = useSnackbar();
     const[data,setData] = React.useState({username:'',email:'',password:'',name:{firstname:'',lastname:''},phone:''})
     const [registerAlert, setRegisterAlert] = React.useState({
         color: '',
@@ -64,27 +66,23 @@ const Register = () => {
             headers: { "Content-Type": "multipart/form-data" },
         })
         .then(response =>{
+            console.log(response.status)
             if (response.status === 200) {
-                setRegisterAlert({ color: 'success', value: 'Create account successfully' });
-            } else if (response.status === 504) {
-                setRegisterAlert({ color: 'danger', value: 'Username has been existed' });
-                setOpen(true);
-            } else {
-                setRegisterAlert({ color: 'warning', value: 'Error when creating account' });
+                enqueueSnackbar("Create account successfully",{variant:'success'});
             }
         })
         .catch(error=>{
+        
+            enqueueSnackbar("Error when create account",{variant:'error'});
+
             console.error("Err: "+error)
         });  
         
     };
 
     return (
+        <SnackbarProvider maxSnack={3}>
     <ThemeProvider theme={defaultTheme} >
-        {registerAlert.value && (
-        <RegisterAlert color={registerAlert.color} value={registerAlert.value} />
-        )}
-        {/* <RegisterAlert color= 'danger' value= 'Username has been existed' /> */}
                 <Snackbar
                     autoHideDuration={4000}
                     open={false}
@@ -213,63 +211,8 @@ const Register = () => {
 
         </Container>
         </ThemeProvider>
+        </SnackbarProvider>
     );
 }
 
 export default Register;
-const RegisterAlert = ({color,value}:any)=>{
-    return (
-        <Alert
-        size="lg"
-        color={color}
-        variant="solid"
-        invertedColors
-        startDecorator={
-            <AspectRatio
-                variant="solid"
-                ratio="1"
-                sx={{
-                minWidth: 40,
-                borderRadius: '50%',
-                boxShadow: '0 2px 12px 0 rgb(0 0 0/0.2)',
-                }}
-            >
-                <div>
-                <Check fontSize="medium" />
-                </div>
-            </AspectRatio>
-            }
-            endDecorator={
-            <IconButton
-                variant="plain"
-                sx={{
-                '--IconButton-size': '32px',
-                transform: 'translate(0.5rem, -0.5rem)',
-                }}
-            >
-                <Close />
-            </IconButton>
-            }
-            sx={{ alignItems: 'flex-start', overflow: 'hidden' }}
-        >
-            <div>
-            <Typography >{color}</Typography>
-            <Typography >
-                {value}
-            </Typography>
-            </div>
-            <LinearProgress
-                variant="solid"
-                color="success"
-                value={40}
-                sx={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    borderRadius: 0,
-                }}
-            />
-        </Alert>
-    )
-}

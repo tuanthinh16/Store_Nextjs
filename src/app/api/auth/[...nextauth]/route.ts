@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next";
 import type { NextAuthOptions } from 'next-auth'
-import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { fetchData } from "../../apiService";
 
@@ -13,6 +13,10 @@ const handler =  NextAuth({
     signIn:"/user/Login"
   },
   providers: [
+    GoogleProvider({
+      clientId: "99009794482-210t4ea0omsdtopr22g4j9dibf5p6p0p.apps.googleusercontent.com" ?? "",
+      clientSecret: "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" ?? "",
+    }),
     CredentialsProvider({
       name: "credentials",
       credentials: {},

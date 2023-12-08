@@ -14,22 +14,22 @@ const Header = () => {
         <Container style={{maxWidth:'100%',paddingTop:'1rem',backgroundColor:'rgb(124,124,124,124)',marginLeft:'30rem',borderRadius:'10px',minHeight:'4rem',marginTop:'1rem',position:'fixed',zIndex:1}}>
             <Row>
                 <Col aria-colspan={2}>
-                    <div style={{}}>
+                    <Container style={{}}>
                         Bunney Admin Dashboard
-                    </div>
+                    </Container>
                 </Col>
                 <Col>
-                    <div style={{display:'flex',right:'2rem'}}>
-                        <div>
+                    <Container style={{display:'flex',right:'2rem'}}>
+                        <Container>
                             <Button variant='outlined'><NotificationsIcon/></Button>
-                        </div>
-                        <div>
+                        </Container>
+                        <Container>
                             <Button onClick={handleShow} variant='outlined'><SettingsIcon/></Button>
-                        </div>
-                        <div style={{}}>
+                        </Container>
+                        <Container style={{}}>
                             <Button variant='outlined'><AccountCircleIcon/></Button>
-                        </div>
-                    </div>
+                        </Container>
+                    </Container>
                 </Col>
             </Row>
             <Offcanvas show={show} onHide={handleClose}>
