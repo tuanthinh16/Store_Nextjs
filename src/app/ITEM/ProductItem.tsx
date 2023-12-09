@@ -12,26 +12,32 @@ import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import StarRating from './Rating';
+import useLocalStorageState from 'use-local-storage-state';
+import { useAppDispatch } from '../store/store';
+import { increment } from '../store/features/cartSlice';
+import { Product } from '../models/interface';
+import { useSnackbar } from 'notistack';
 
-const MyButton = styled(Button)`
-    &&:hover{
-        width: 50%;
-        background-color: #107919a2;
-        font-weight: bold;
-        color: white;
-    }
-`
+
 const ProductItem = ({product}:any) => {
+    const dispatch = useAppDispatch();
     const [quantity,setQuantity]= React.useState(1);
+    const [cart,setCart] = useLocalStorageState('cart',{});
+    const {enqueueSnackbar} = useSnackbar();
     const handleQuantityChange = (newQuantity: any) => {
         setQuantity(newQuantity);
     };
     const route = useRouter();
-    console.log(product)
+    console.log(product);
+    const handleAddCart = (data:Product)=>{
+        dispatch(increment(data));
+        enqueueSnackbar('Add to cart successful', {variant:'success'})
+    }
+    console.log('',cart);
     return (
         <>
         {product?.map((row:any,index:number)=>(
-            <Card sx={{ width: 320, maxWidth: '100%', boxShadow: 'lg',marginLeft:5 }} key={index}>
+            <Card sx={{ width: 320, maxWidth: '100%', boxShadow: 'lg',marginLeft:5,marginBottom:5 }} key={index}>
                 <CardOverflow>
                 <AspectRatio sx={{ minWidth: 200 }}>
                     <img
@@ -71,7 +77,7 @@ const ProductItem = ({product}:any) => {
                 </Typography>
                 </CardContent>
                 <CardOverflow>
-                <Button variant="soft" color="danger" size="lg">
+                <Button variant="soft" color="danger" size="lg" onClick={()=> handleAddCart(row)}>
                     Add to cart
                 </Button>
                 </CardOverflow>

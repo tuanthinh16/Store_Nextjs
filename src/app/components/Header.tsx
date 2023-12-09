@@ -25,6 +25,12 @@ import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next';
 import { signOut, useSession } from "next-auth/react";
 import CartItem from '../ITEM/CartItem';
 import {cart} from '../models/cartData';
+import useLocalStorageState from 'use-local-storage-state';
+import { useSelector } from 'react-redux';
+import { useAppSelector  } from '../store/store';
+import { totalCartItemsSelector } from '../store/features/cartSlice';
+
+
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -105,9 +111,13 @@ const Header = () => {
     const handleClickUser = (key:any)=>{
         route.push('/user/'+key);
     }
+
     const { data: session }: any = useSession();
     const[openCart, setOpenCart] = React.useState(false);
-    
+    const totalItems = useAppSelector(totalCartItemsSelector);
+    const cartItems = useAppSelector(
+        (state) => state.cart.cartItems
+    );
     return (
         <MyAppBar position="fixed">
         <Container >
@@ -217,7 +227,7 @@ const Header = () => {
                 </Box>
                 
                 <Box sx={{ flexGrow: 0 }}>
-                <Badge size='lg' sx={{marginRight:5}}>
+                <Badge size='lg' sx={{marginRight:5}} badgeContent={totalItems?(totalItems):""}>
                     <Typography fontSize="xl">
                         <Button style={{borderRadius:'25px'}} onClick={() => setOpenCart(true)} >🛒</Button>
                     </Typography>
@@ -225,8 +235,7 @@ const Header = () => {
                         <Drawer open={openCart} onClose={() => setOpenCart(false)} anchor="right" size="sm" sx={{position:'relative'}}>
                             <ModalClose />
                             <DialogTitle level='h2'> My Cart</DialogTitle>
-                            <CartItem cartItem={cart}/>
-                            
+                            <CartItem cartItem={cartItems}/>
                         </Drawer>
                     </Box>
                 </Badge>
@@ -256,9 +265,6 @@ const Header = () => {
                     <Typography style={{padding:7,color:'green'}}>{session?.user?.email}</Typography>
                     <MenuItem  onClick={()=>handleClickUser('Profile')}>
                         <Typography textAlign="center">Profile</Typography>
-                    </MenuItem>
-                    <MenuItem  onClick={()=>handleClickUser('Cart')}>
-                        <Typography textAlign="center">Cart</Typography>
                     </MenuItem>
                     <MenuItem onClick={()=>handleClickUser('Wallet')}>
                         <Typography textAlign="center">Wallet</Typography>

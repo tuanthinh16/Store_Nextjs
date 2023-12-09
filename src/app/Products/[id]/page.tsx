@@ -9,12 +9,17 @@ import { Add, Remove } from '@mui/icons-material';
 import { styled } from '@mui/material';
 import PublicIcon from '@mui/icons-material/Public';
 import { useSession } from 'next-auth/react';
+import { useDispatch } from 'react-redux';
+import { increment } from '@/app/store/features/cartSlice';
+import { Product } from '@/app/models/interface';
+import { useSnackbar } from 'notistack';
 
 const ProductDetail = ({params}:{params:{id:string}}) => {
     const { data: session,status: sessionStatus }: any = useSession();
     const [product, setProduct] = React.useState<any[]>([]);
     const [count, setCount] = React.useState(0);
     const [image,setImage]= useState('');
+    const {enqueueSnackbar} = useSnackbar();
     const fetchData =()=>{
         const url="/api/product?id="+params.id;
         axios.get(url)
@@ -29,6 +34,11 @@ const ProductDetail = ({params}:{params:{id:string}}) => {
     React.useEffect(()=>{
         fetchData(); 
     },[])
+    const dispatch = useDispatch();
+    const handleAdd = (row: Product)=>{
+        dispatch(increment(row));
+        enqueueSnackbar('Add successfully',{variant:'success'})
+    }
     return (
         sessionStatus =='authenticated'&&(
             <>
@@ -62,41 +72,13 @@ const ProductDetail = ({params}:{params:{id:string}}) => {
                 <div >
                     <Typography level="h1">{row.title}</Typography>
                     <Typography level="body-sm">{row.description}</Typography>
+                    <Typography sx={{display:'flex'}}> Price : <p style={{textDecoration:'line-through', marginRight:5,marginLeft:5}}>{(parseInt(row.price) + parseInt(row.price)*10/100)*1000}{'đ'} </p><b style={{color:'green'}}>{parseInt(row.price)*1000}{'đ'}</b></Typography>
                     <div style={{display:'flex'}}>
                         <p style={{paddingTop:7 ,display:'flex'}}>{"("}{row['rating']?.['count']}{")"}{row['rating']?.['rate']}<StarIcon fontSize='small'style={{color:'rgb(187, 149, 26)'}}/></p>
                         <StarRating initialRating={row['rating']?.['rate']}/> 
                     </div>
-                    <div style={{position:'absolute',bottom:5,right:1,width:'50%',display:'flex',alignItems:'center'}}>
-                        <Box
-                            sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 2,
-                            pt: 4,
-                            mb: 2,
-                            borderTop: '1px solid gray',
-                            borderColor: 'background.level1',
-                            }}
-                        >
-                            <IconButton
-                            size="sm"
-                            variant="outlined"
-                            onClick={() => setCount((c) => c - 1)}
-                            >
-                            <Remove />
-                            </IconButton>
-                            <Typography fontWeight="md" textColor="text.secondary">
-                            {count}
-                            </Typography>
-                            <IconButton
-                            size="sm"
-                            variant="outlined"
-                            onClick={() => setCount((c) => c + 1)}
-                            >
-                            <Add />
-                            </IconButton>
-                        </Box>
-                        <MyButton variant="outlined" style={{width:'40%',marginLeft:15,marginTop:10}}>Buy</MyButton>
+                    <div style={{position:'absolute',bottom:20,right:1,width:'50%',display:'flex',alignItems:'center'}}>
+                        <MyButton variant="outlined" style={{width:'40%',marginLeft:15,marginTop:10}} onClick={()=>handleAdd( row) }>Add To Cart</MyButton>
                     </div>
                 </div>
             </Card>

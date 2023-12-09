@@ -44,17 +44,15 @@ const LoginFrom = ()=>{
             password,
         });
         if (res?.error) {
-            console.log("error")
+            console.log("error");
+            enqueueSnackbar("Error when login",{variant:'error'});
         if (res?.url) {
             enqueueSnackbar("Login success",{variant:'success'});
-            route.replace("/");
-            
-            
-        }
+            route.replace("/"); 
+            }
         }
         console.log("response ",res)
     } 
-    // console.log("process.env.CLIENT_ID",process.env.CLIENT_ID as string) 
     return (
         sessionStatus !== "authenticated"&&(
         <ThemeProvider theme={defaultTheme}>
@@ -133,7 +131,6 @@ const LoginFrom = ()=>{
                     </Link>
                     </Grid>
                 </Grid>
-                {/* <Copyright sx={{ mt: 5 }} /> */}
                 </Box>
             </Box>
             <Button onClick={()=>signIn("google")}>Google</Button>

@@ -14,6 +14,9 @@ import Typography from '@mui/joy/Typography';
 import { CssVarsProvider, extendTheme } from '@mui/joy'
 import { useSession } from 'next-auth/react'
 import { SnackbarProvider } from 'notistack'
+import BootstrapCarousel from './components/app.carousel'
+
+
 
 export default function Home() {
   const { data: session }: any = useSession();
@@ -41,8 +44,11 @@ export default function Home() {
   return (
     <SnackbarProvider maxSnack={3}>
     <Container style={{maxWidth:'100%'}}>
+      {/* <BootstrapCarousel/> */}
       <ColorInversionMarketing/>
+      
       <div style={{display:'flex',flexWrap:'wrap',marginTop:50}}>
+        
       {loading?(
         <LoadingCard />
       ):(

@@ -5,8 +5,8 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import { getServerSession } from 'next-auth'
 import SessionProvider from './components/SessionProvider'
-import ColorInversionMarketing from './components/New'
-
+import Providers from './components/Provider'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -27,8 +27,9 @@ export default async function RootLayout({
     <html lang="en">
       
       <body className={inter.className}>
-      
+      <Providers>
         <SessionProvider session={session} >
+        
           <Header/>
           <div style={{marginTop:"7rem",marginBottom:'3rem'}}>
           
@@ -36,6 +37,7 @@ export default async function RootLayout({
           </div>
           <Footer/>
         </SessionProvider>
+        </Providers>
         </body>
     </html>
   )
