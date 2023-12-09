@@ -29,7 +29,7 @@ import useLocalStorageState from 'use-local-storage-state';
 import { useSelector } from 'react-redux';
 import { useAppSelector  } from '../store/store';
 import { totalCartItemsSelector } from '../store/features/cartSlice';
-
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -120,7 +120,7 @@ const Header = () => {
     );
     return (
         <MyAppBar position="fixed">
-        <Container >
+        <Container style={{position:'relative',maxWidth:'90%'}}>
             <Toolbar disableGutters >
                 {/* <Image src={logo} width={100} height={50} alt={'logo'}/> */}
                 <Typography
@@ -215,35 +215,37 @@ const Header = () => {
                         inputProps={{ 'aria-label': 'search' }}
                         />
                 </Search></div>
-                {pages.map((page) => (
-                    <Button
-                    key={page}
-                    onClick={()=>handleClick(page)}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                    {page}
-                    </Button>
-                ))}
+                <div style={{margin:'auto',display:'flex'}}>
+                    {pages.map((page) => (
+                        <Button
+                        key={page}
+                        onClick={()=>handleClick(page)}
+                        sx={{ my: 2, color: 'white', display: 'block',fontWeight:'bold' }}
+                        variant='soft'
+                        >
+                        {page}
+                        </Button>
+                    ))}
+                </div>
                 </Box>
                 
-                <Box sx={{ flexGrow: 0 }}>
-                <Badge size='lg' sx={{marginRight:5}} badgeContent={totalItems?(totalItems):""}>
-                    <Typography fontSize="xl">
-                        <Button style={{borderRadius:'25px'}} onClick={() => setOpenCart(true)} >🛒</Button>
-                    </Typography>
-                    <Box sx={{ display: 'flex' }}>
-                        <Drawer open={openCart} onClose={() => setOpenCart(false)} anchor="right" size="sm" sx={{position:'relative'}}>
-                            <ModalClose />
-                            <DialogTitle level='h2'> My Cart</DialogTitle>
-                            <CartItem cartItem={cartItems}/>
-                        </Drawer>
-                    </Box>
-                </Badge>
+                <Box sx={{ flexGrow: 1 ,display:'flex',justifyContent:'flex-end'}}>
+                    <Badge size='lg' sx={{marginRight:5}} badgeContent={totalItems?(totalItems):""}>
+                        <Typography fontSize="l">
+                            <Button style={{borderRadius:'25px'}} onClick={() => setOpenCart(true)} >🛒</Button>
+                        </Typography>
+                        <Box sx={{ display: 'flex' }}>
+                            <Drawer open={openCart} onClose={() => setOpenCart(false)} anchor="right" size="sm" sx={{position:'relative'}}>
+                                <ModalClose />
+                                <DialogTitle level='h2'> My Cart</DialogTitle>
+                                <CartItem cartItem={cartItems}/>
+                            </Drawer>
+                        </Box>
+                    </Badge>
                 
                 <Tooltip title="Open settings">
-                    
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                    <AccountBoxIcon fontSize='large'/>
                     </IconButton>
                 </Tooltip>
                 <Menu

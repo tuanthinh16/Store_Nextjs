@@ -38,10 +38,10 @@ export default function ColorInversionMarketing() {
         }}
         >
         <Box sx={{ zIndex: 1, position: 'relative' }}>
-            <Typography sx={{ mt: 0.5, mb: 2 ,fontWeight:'bold'}}>Hi {session?.user?.name['firstname']}{" "}{session?.user?.name['lastname']}</Typography>
+            <Typography sx={{ mt: 0.5, mb: 2 ,fontWeight:'bold'}} level='h2'>Hi {session?.user?.name['firstname']}{" "}{session?.user?.name['lastname']}</Typography>
+            <Typography sx={{fontWeight:'bold'}} level='h4'> Make your life become more beautiful</Typography>
             <Typography sx={{ mt: 0.5, mb: 2 }}>
-                {'Make your life become more beautiful'}
-                {"Khám phá thế giới thời trang tại cửa hàng của chúng tôi, nơi bạn sẽ bắt gặp sự đa dạng với những mẫu giày và đồ áo đi hàng đầu. Từ phong cách đơn giản đến năng động, chúng tôi cam kết mang đến cho bạn những trải nghiệm mua sắm không giới hạn với chất lượng và phong cách độc đáo."}
+                {"Explore the world of fashion in our store, where you will find a variety of top-notch shoes and apparel. From simple to dynamic styles, we are committed to bringing you unlimited shopping experiences with unique quality and style."}
             </Typography>
             <Box
             sx={{

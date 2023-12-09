@@ -44,8 +44,7 @@ function Stat({
         >
         <div>
             <Typography sx={{ mb: 2 }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
+            Explore the world of fashion in our store, where you will find a variety of top-notch shoes and apparel. From simple to dynamic styles, we are committed to bringing you unlimited shopping experiences with unique quality and style.
             </Typography>
             <Button variant="soft">Learn more</Button>
         </div>
