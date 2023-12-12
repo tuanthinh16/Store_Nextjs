@@ -58,7 +58,7 @@ const CartItem = ({cartItem}:any) => {
                     href={"Products/"+row.product._id}
                     sx={{ color: 'text.tertiary' }}
                 >
-                    {row.options?.color}{"/"}{row.options?.size}
+                    {row.product.options?.color}{"/"}{row.product.options?.size}
                 </Link>
                 </Typography>
                 <div style={{display:'flex'}}>

@@ -6,6 +6,10 @@ export interface Product {
     price: number;
     imageUrl: object;
     rating:object;
+    options:{
+        size:string,
+        color:string
+    };
 }
     
 export interface CartItem {

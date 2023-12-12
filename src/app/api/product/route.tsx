@@ -61,7 +61,9 @@ export async function POST(request:NextRequest) {
     const product = await request.formData();
     const ratingData = (product.get('rating'));
     const imageUrl = (product.get('imageUrl'));
-    if (ratingData != null && imageUrl != null) {
+    const options = product.get('options');
+    console.log('product',product);
+    if (ratingData != null && imageUrl != null && options != null) {
         try {
             const _data = {
                 "collection": "Products",
@@ -73,7 +75,8 @@ export async function POST(request:NextRequest) {
                     "category": product.get('category'),
                     "price": product.get('price'),
                     "imageUrl": JSON.parse(imageUrl.toString()),
-                    "rating":JSON.parse(ratingData.toString())
+                    "rating":JSON.parse(ratingData.toString()),
+                    "options":JSON.parse(options.toString())
                 }
             };
             
@@ -81,11 +84,11 @@ export async function POST(request:NextRequest) {
             if(userData){
                 return NextResponse.json({data:userData},{status:200})
             }else{
-                return NextResponse.json({err:"Error when insert product"},{status:200})
+                return NextResponse.json({err:"Error when insert product"},{status:500})
             }
         } catch (error) {
             console.error('Error insert product :', error);
-            return NextResponse.json({err:error},{status:200})
+            return NextResponse.json({err:error},{status:400})
         }
     }
     
@@ -109,7 +112,8 @@ export async function PUT(request:NextRequest){
                     "category": product.get('category'),
                     "image": product.get('image'),
                     "price": product.get('price'),
-                    "rating":product.get('rating')
+                    "rating":product.get('rating'),
+                    "options":product.get('options')
                 }
             }
         };

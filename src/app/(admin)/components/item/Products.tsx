@@ -57,6 +57,22 @@ const Products = () => {
 
 export default Products;
 const  BottomActionsCard = ({products}:any)=> {
+    const route = useRouter();
+    const {enqueueSnackbar} = useSnackbar();
+    const onDelete = (_id:string)=>{
+        const url="/api/product?id="+_id;
+        axios.delete(url)
+        .then(response =>{
+            
+            enqueueSnackbar('Delete product success',{variant:'success'});
+            window.location.reload();
+        })
+        .catch(error=>{
+            enqueueSnackbar('Delete product not complete',{variant:'error'})
+            console.error("Err: "+error)
+        });
+        
+    }
     return (
         <>
         {products?.map((item:any,index:number)=>(
@@ -84,7 +100,7 @@ const  BottomActionsCard = ({products}:any)=> {
                     <Avatar src="/static/images/avatar/1.jpg" size="lg" />
                     <Typography sx={{color:'green'}}>{item.category}</Typography>
                 </Box>
-                <CardContent >
+                <CardContent sx={{maxHeight:150,overflow:'auto'}}>
                     <Typography level="title-lg">{item.title}</Typography>
                     <Typography level="body-sm">
                         {item.description}
@@ -100,7 +116,7 @@ const  BottomActionsCard = ({products}:any)=> {
                     <Button variant="soft" color="warning">
                         Edit
                     </Button>
-                    <Button variant="soft" color="danger">
+                    <Button variant="soft" color="danger" onClick={()=> onDelete(item._id)}>
                         Delete
                     </Button>
                 </CardActions>
@@ -158,27 +174,40 @@ const AddProduct = ()=>{
         }
     };
     const [fileName,setFileName] = useState <string[]>([]);
-    const [product,setProduct] = useState({title:'',description:'',category:'',price:'',rating:{rate:5,count:1}});
+    const [product,setProduct] = useState({title:'',description:'',category:'',price:'',rating:{rate:5,count:1},options:{size:'',color:''}});
     const onValueChange =(_key:any)=>(e:any)=>{
         setProduct((prev)=>({...prev,[_key]:e.target.value}));
     }
     const [uploaded,setUploaded] = useState(false);
     const route = useRouter();
+    const handleChangeOptions = (_key:string) =>(e: React.ChangeEvent<HTMLInputElement>)=> {
+        setProduct((prev) => ({
+            ...prev,
+            options: {
+                ...prev.options,
+                [_key]: e.target.value
+            }
+            }));
+    };
+    console.log("options",product.options);
     const onAdd = async () => {
-            const Fdata = new FormData();
-            Fdata.append('title',product.title);
-            Fdata.append('description',product.description);
-            Fdata.append('price',product.price);
-            Fdata.append('category',product.category);
-            Fdata.append('imageUrl',JSON.stringify(fileName));
-            Fdata.append('rating',JSON.stringify(product.rating))
+            // console.log('image: ',JSON.stringify(fileName));
             
-            console.log('image: ',JSON.stringify(fileName));
+            const formData = {
+                title: product.title,
+                description: product.description,
+                price: product.price,
+                category: product.category,
+                imageUrl:JSON.stringify(fileName),
+                rating:JSON.stringify(product.rating),
+                options:JSON.stringify(product.options)
+            }
+            console.log("formData",formData);
             const url="/api/product";
             axios({
                 method:"post",
                 url: url,
-                data:Fdata,
+                data:formData,
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response =>{
@@ -237,11 +266,20 @@ const AddProduct = ()=>{
                 <Form.Label style={{marginLeft:1,float:'left',fontWeight:'bold',fontSize:'medium'}}>Price </Form.Label>
                 <Form.Control type="text" required onChange={onValueChange('price')}/>
             </Form.Group>
+            <Form.Group className="mb-5" controlId="exampleForm.ControlInput1">
+                <Form.Label style={{marginLeft:1,float:'left',fontWeight:'bold',fontSize:'medium'}}>Size </Form.Label>
+                <Form.Control type="text" required onChange={handleChangeOptions('size')}/>
+            </Form.Group>
+            <Form.Group className="mb-5" controlId="exampleForm.ControlInput1">
+                <Form.Label style={{marginLeft:1,float:'left',fontWeight:'bold',fontSize:'medium'}}>Color </Form.Label>
+                <Form.Control type="text" required onChange={handleChangeOptions('color')}/>
+            </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" style={{alignContent:'center'}}>
                 {uploaded?(
                     <Button variant='soft' style={{width:'30%',margin:'auto'}} onClick={onAdd}>ADD</Button>
                 ):(
                     <>
+                        <Button variant='soft' style={{width:'30%',margin:'auto'}} onClick={onAdd}>ADD</Button>
                         <CircularProgress variant='solid' color="success" /><p>{'uploading image'}</p>
                     </>
                 )}
