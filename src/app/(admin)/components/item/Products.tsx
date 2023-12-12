@@ -1,108 +1,114 @@
+
+import { Product } from '@/app/models/interface';
+import { FavoriteBorder } from '@mui/icons-material';
+import { Avatar, Box, Button, Card, CardActions, CardContent, CircularProgress, Container, Divider, Grid, IconButton, LinearProgress, Sheet, Typography, styled } from '@mui/joy';
 import axios from 'axios';
-import Link from 'next/link';
-import React, { useState } from 'react'
-import { Button, Container, FloatingLabel, Form, Modal, Table } from 'react-bootstrap'
-import { makeUploadRequest } from './uploadImage';
-import Spinner from 'react-bootstrap/Spinner';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import toast from '../Toast';
-import AlertVariousStates from '../Toast';
 import { useSnackbar } from 'notistack';
+import React, { useState } from 'react'
+import { makeUploadRequest } from './uploadImage';
 import { useRouter } from 'next/navigation';
+import { FloatingLabel, Form } from 'react-bootstrap';
+
+const Item = styled(Sheet)(({ theme }) => ({
+    backgroundColor:
+        theme.palette.mode === 'dark' ? theme.palette.background.level1 : '#fff',
+    ...theme.typography['body-sm'],
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    borderRadius: 4,
+    color: theme.vars.palette.text.secondary,
+}));
 
 
-
-
-const ListProduct = ({product}:any) => {
-    const route = useRouter();
-    const [showadd,setShowadd] = useState(false);
-    const [showDel,setShowDel] = useState(false);
-    const [confirm,setConfirm] = useState(false);
-    const {enqueueSnackbar} = useSnackbar();
-    console.log("Data product: ",product)
-    let count = 1;
-    const onClickAdd =()=>{
-        setShowadd(true);
-    }
-    const [showToast, setShowToast] = useState(false);
-    const onDelete = (_id:string)=>{
-        const url="/api/product?id="+_id;
-        axios.delete(url)
+const Products = () => {
+    const [product,setProduct] = React.useState<any[]>([]);
+    React.useEffect(()=>{
+        fetchData();
+    },[]);
+    const fetchData =()=>{
+        const url="/api/product";
+        axios.get(url)
         .then(response =>{
-            route.replace('/adminpage');
-            enqueueSnackbar('Delete product success',{variant:'success'})
+            setProduct(response.data['data']);
+            console.log("data lay duoc: ",response.data['data'])
         })
         .catch(error=>{
-            enqueueSnackbar('Delete product not complete',{variant:'error'})
             console.error("Err: "+error)
         });
-        
-    }
+    }     
     return (
-        <Container>
-            <div style={{display:'flex',position:'relative'}}>
-                <h3>Product List</h3>
-                <div style={{position:'absolute',right:'3rem'}}>
-                    <Button variant='secondary' onClick={onClickAdd} >Add Product</Button>
-                </div>
-            </div>
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Image</th>
-                            <th>Price</th>
-                            <th>Rating</th>
-                            <th colSpan={2}>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {product?.map(async (row:any,index:number)=>(
-                        <tr key={index}>
-                            <td>{count++}</td>
-                            <td style={{color:'green',fontSize:'small'}}>{row['_id']}</td>
-                            <td>{row['title']}</td>
-                            <td>{row['category']}</td>
-                            <td style={{maxHeight:'100px',overflowY:'auto'}}>{row['description']}</td>
-                            <td style={{}}>
-                                {row['imageUrl']?.map((imageUrl:string,index:number)=>(
-                                    <Link href={imageUrl} style={{textDecoration:'none',marginLeft:5}} key={index}>{'Image'}{index}</Link>
-                                ))}
-                            </td>
-                            <td>{row['price']}</td>
-                            <td>{row['rating']?.['rate']}</td>
-                            <td colSpan={2}>
-                                <Button variant='outlined'>Edit</Button>
-                                <Button variant='outlined' onClick={()=> onDelete(row._id)}>Delete</Button>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </Table>
-                <Modal
-                    size="lg"
-                    show={showadd}
-                    onHide={() => setShowadd(false)}
-                    aria-labelledby="example-modal-sizes-title-lg"
-                >
-                    <Modal.Header closeButton>
-                    <Modal.Title id="example-modal-sizes-title-lg">
-                        {'Add Product'}
-                    </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body><AddProduct/></Modal.Body>
-                </Modal>
-        </Container>
+        <>
+        <Typography fontSize='large' sx={{padding:3,fontWeight:'bold',color:'rgb(123,123,123)'}}>Manage Products</Typography>
+        <LinearProgress color="success" variant="soft" />
+        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+            <Grid xs={6} md={4}>
+                <Item>
+                    
+                    <AddProduct/>
+                </Item>
+            </Grid>
+            <Grid xs={6} md={8}>
+                <Item style={{display:'flex',flexWrap:'wrap'}}><BottomActionsCard products ={product}/></Item>
+            </Grid>
+        </Grid>
+        </>
     )
 }
 
-export default ListProduct;
-
+export default Products;
+const  BottomActionsCard = ({products}:any)=> {
+    return (
+        <>
+        {products?.map((item:any,index:number)=>(
+            <Card
+                variant="outlined"
+                sx={{
+                    width: 220,
+                    // to make the card resizable
+                    display:'flex',
+                    overflow: 'auto',
+                    resize: 'horizontal',
+                    margin:2,
+                    // backgroundImage:`url(${item.imageUrl[0]})`,
+                    
+                }}
+                key={index}
+            >
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                    >
+                    <Avatar src="/static/images/avatar/1.jpg" size="lg" />
+                    <Typography sx={{color:'green'}}>{item.category}</Typography>
+                </Box>
+                <CardContent >
+                    <Typography level="title-lg">{item.title}</Typography>
+                    <Typography level="body-sm">
+                        {item.description}
+                    </Typography>
+                    
+                </CardContent>
+                
+                <CardActions buttonFlex="0 1 120px">
+                <Divider orientation="horizontal" inset="context"/>
+                    <IconButton variant="outlined" color="neutral" sx={{ mr: 'auto' }}>
+                        <FavoriteBorder />
+                    </IconButton>
+                    <Button variant="soft" color="warning">
+                        Edit
+                    </Button>
+                    <Button variant="soft" color="danger">
+                        Delete
+                    </Button>
+                </CardActions>
+            </Card>
+        ))}
+        </>
+    );
+}
 const AddProduct = ()=>{
     const {enqueueSnackbar} = useSnackbar();
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -179,7 +185,7 @@ const AddProduct = ()=>{
                 if(response.status===200){
                     enqueueSnackbar('Add product success',{variant:'success'});
                     console.log("add thanh cong",response.data);
-                    route.replace('/adminpage');
+                    route.refresh();
                 }
             })
             .catch(error=>{
@@ -197,10 +203,9 @@ const AddProduct = ()=>{
     
     return(
         <Container>
-            
             <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Form.Label>Name </Form.Label>
+                <Form.Label style={{marginLeft:1,float:'left',fontWeight:'bold',fontSize:'medium'}}>Name </Form.Label>
                 <Form.Control type="text" required onChange={onValueChange('title')} />
             </Form.Group>
             <FloatingLabel controlId="floatingSelect" label="Category">
@@ -211,11 +216,11 @@ const AddProduct = ()=>{
                 </Form.Select>
             </FloatingLabel>
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Description</Form.Label>
+                <Form.Label style={{marginLeft:1,float:'left',fontWeight:'bold',fontSize:'medium'}}>Description</Form.Label>
                 <Form.Control as="textarea" rows={3} onChange={onValueChange('description')}/>
             </Form.Group>
             <Form.Group controlId="formFileMultiple" className="mb-3">
-                <Form.Label>Image Product</Form.Label>
+                <Form.Label style={{marginLeft:1,float:'left',fontWeight:'bold',fontSize:'medium'}}>Image Product</Form.Label>
                 <Form.Control type="file" multiple  onChange={handleFileChange}/>
                 {selectedFiles.length > 0 && (
                     <Container>
@@ -228,16 +233,16 @@ const AddProduct = ()=>{
                     </Container>
                 )}
             </Form.Group>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Form.Label>Price </Form.Label>
+            <Form.Group className="mb-5" controlId="exampleForm.ControlInput1">
+                <Form.Label style={{marginLeft:1,float:'left',fontWeight:'bold',fontSize:'medium'}}>Price </Form.Label>
                 <Form.Control type="text" required onChange={onValueChange('price')}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1" style={{alignContent:'center'}}>
                 {uploaded?(
-                    <Button variant='success' style={{width:'30%',margin:'auto'}} onClick={onAdd}>ADD</Button>
+                    <Button variant='soft' style={{width:'30%',margin:'auto'}} onClick={onAdd}>ADD</Button>
                 ):(
                     <>
-                    <Spinner animation="border" variant="warning" />{'uploading image'}
+                        <CircularProgress variant='solid' color="success" /><p>{'uploading image'}</p>
                     </>
                 )}
             </Form.Group>

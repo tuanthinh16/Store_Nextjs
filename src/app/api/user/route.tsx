@@ -5,21 +5,38 @@ import {NextRequest, NextResponse } from 'next/server';
 export async function GET(request:Request) {
     const { searchParams } = new URL(request.url);
     const _username = searchParams.get('username');
-    try {
-        const _data = {
-            "collection": "users",
-            "database": "FirstApi",
-            "dataSource": "RustData",
-            "filter":{
-                "username": _username,
-            }
-        };
-        
-        const userData = await fetchData('https://ap-southeast-1.aws.data.mongodb-api.com/app/data-sdyzv/endpoint/data/v1/action/findOne', 'post', _data);
-        return NextResponse.json({data:userData['documents']},{status:200});
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-        throw error;
+    if(_username){
+        try {
+            const _data = {
+                "collection": "users",
+                "database": "FirstApi",
+                "dataSource": "RustData",
+                "filter":{
+                    "username": _username,
+                }
+            };
+            
+            const userData = await fetchData('https://ap-southeast-1.aws.data.mongodb-api.com/app/data-sdyzv/endpoint/data/v1/action/findOne', 'post', _data);
+            return NextResponse.json({data:userData['document']},{status:200});
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            throw error;
+        }
+    }
+    else{
+        try {
+            const _data = {
+                "collection": "users",
+                "database": "FirstApi",
+                "dataSource": "RustData",
+            };
+            
+            const userData = await fetchData('https://ap-southeast-1.aws.data.mongodb-api.com/app/data-sdyzv/endpoint/data/v1/action/find', 'post', _data);
+            return NextResponse.json({data:userData['documents']},{status:200});
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            throw error;
+        }
     }
 }
 export async function POST(request:NextRequest) {

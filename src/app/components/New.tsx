@@ -52,10 +52,19 @@ export default function ColorInversionMarketing() {
                 '& > *': { flexGrow: 1, fontWeight: 'lg' },
             }}
             >
-            {!session &&(
-                <Button sx={{ minWidth: 120 }} onClick={()=>route.push('/user/Login')}>Login</Button>
-            )}
-            <Button
+            {!session ?(
+                <Button
+                variant="plain"
+                sx={{
+                    '&:hover': { '--Button-gap': '0.625rem' },
+                    '& span': { transition: '0.15s' },
+                    
+                    padding:1,
+                    color:'white'
+                    }}
+                onClick={()=>route.push('/user/Login')}>Login</Button>
+            ):(
+                <Button
                 variant="plain"
                 endDecorator={<ArrowForwardIcon />}
                 sx={{
@@ -66,6 +75,7 @@ export default function ColorInversionMarketing() {
             >
                 Shopping Now
             </Button>
+            )}
             </Box>
         </Box>
         <Box

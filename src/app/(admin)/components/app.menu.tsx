@@ -3,6 +3,10 @@ import axios from 'axios';
 import React from 'react'
 import { Button, Col, Container, Nav, Row, Tab, Tabs } from 'react-bootstrap'
 import ListProduct from './item/item.listProduct';
+import Category from './item/Category';
+import { signOut } from 'next-auth/react';
+import Products from './item/Products';
+import UserAccount from './item/UserAccount';
 
 const Menu = () => {
     const [product,setProduct] = React.useState<any[]>([]);
@@ -37,8 +41,23 @@ const Menu = () => {
                 <Nav.Item>
                     <Nav.Link eventKey="user" style={{height:'3rem',color:'white',fontWeight:'bold'}}>User Account</Nav.Link>
                 </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="wallet" style={{height:'3rem',color:'white',fontWeight:'bold'}}>Wallet</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="oder" style={{height:'3rem',color:'white',fontWeight:'bold'}}>The Oder</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="staff" style={{height:'3rem',color:'white',fontWeight:'bold'}}>Staff</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="seller" style={{height:'3rem',color:'white',fontWeight:'bold'}}>Seller</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="revenue" style={{height:'3rem',color:'white',fontWeight:'bold'}}>Revenue</Nav.Link>
+                </Nav.Item>
                 <Nav.Item style={{margin:'1rem'}}>
-                    <Button variant='danger'>Logout</Button>
+                    <Button variant='danger' onClick={()=> signOut()}>Logout</Button>
                 </Nav.Item>
                 </Nav>
             </Col>
@@ -46,10 +65,12 @@ const Menu = () => {
                 <Tab.Content>
                 <Tab.Pane eventKey="dashboard">First tab content</Tab.Pane>
                 <Tab.Pane eventKey="products" style={{paddingTop:'3rem'}}>
-                    <ListProduct product={product}/>
-                    </Tab.Pane>
-                <Tab.Pane eventKey="categories">third tab content</Tab.Pane>
-                <Tab.Pane eventKey="user">fourth tab content</Tab.Pane>
+                    <Products/>
+                </Tab.Pane>
+                <Tab.Pane eventKey="categories">
+                    <Category/>
+                </Tab.Pane>
+                <Tab.Pane eventKey="user"><UserAccount/></Tab.Pane>
                 </Tab.Content>
             </Col>
             </Row>
