@@ -220,8 +220,9 @@ const Header = () => {
                         <Button
                         key={page}
                         onClick={()=>handleClick(page)}
-                        sx={{ my: 2, color: 'white', display: 'block',fontWeight:'bold' }}
-                        variant='soft'
+                        sx={{ my: 2, color: 'white', display: 'block',fontWeight:'bold',
+                            '&:hover':{backgroundColor:'green',width:'50%'}}}
+                        variant='plain'
                         >
                         {page}
                         </Button>

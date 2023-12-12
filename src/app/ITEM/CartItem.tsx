@@ -22,8 +22,8 @@ const CartItem = ({cartItem}:any) => {
     console.log('Data geted ',cartItem);
     return (
         <>
+        <div className="content" style={{maxHeight:'70%',overflow:'auto'}}>
         {cartItem?.map((row:any,index:number)=>(
-            <>
             <Card
             variant="soft"
             orientation="horizontal"
@@ -36,6 +36,7 @@ const CartItem = ({cartItem}:any) => {
                 paddingLeft:2,
                 borderBottom:'1px solid',
                 overflowY:'auto',
+                maxHeight:'70%'
             
             }}
             >
@@ -104,8 +105,8 @@ const CartItem = ({cartItem}:any) => {
             
             </Card>
             
-            </>
         ))}
+        </div>
         {!totalPrice&&(
             <Container style={{margin:'auto'}}>
                 <ShoppingCartOutlinedIcon fontSize='large'/>
@@ -115,7 +116,7 @@ const CartItem = ({cartItem}:any) => {
             </Container>
         )}
         {totalPrice?(
-            <Container style={{maxWidth:'90%',marginLeft:10,position:'absolute',bottom:10,width:'90%',padding:2}}>
+            <Container style={{maxWidth:'90%',marginLeft:10,position:'absolute',bottom:10,width:'90%',padding:2,zIndex:1}}>
                 <Paper className="taxes" style={{display:'flex',borderBottom:'1px solid',justifyContent:'space-between',padding:2,marginBottom:3}}>
                     <Typography fontWeight="md" fontSize="xl" >Taxes</Typography>
                     <Typography fontWeight="md" style={{right:0,fontWeight:'bold'}}>0% = 0đ</Typography>
