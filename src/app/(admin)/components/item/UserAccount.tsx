@@ -64,6 +64,7 @@ export const  BioCard=()=> {
                 boxShadow: 'lg',
                 margin:2,
             }}
+            key ={index}
             >
             <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
                 <Avatar src="/static/images/avatar/1.jpg" sx={{ '--Avatar-size': '4rem' }} />
