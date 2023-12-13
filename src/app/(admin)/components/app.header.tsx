@@ -11,7 +11,7 @@ const Header = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     return (
-        <Container style={{maxWidth:'100%',paddingTop:'1rem',backgroundColor:'rgb(124,124,124,124)',marginLeft:'30rem',borderRadius:'10px',minHeight:'4rem',marginTop:'1rem',position:'fixed',zIndex:1}}>
+        <Container className='w-screen fixed top-3 mb-10 ml-10 rounded-lg bg-stone-500 right-0 h-20 p-2 items-center z-10'>
             <Row>
                 <Col aria-colspan={2}>
                     <Container style={{}}>

@@ -1,4 +1,4 @@
-
+'use client'
 import { Product } from '@/app/models/interface';
 import { FavoriteBorder } from '@mui/icons-material';
 import { AspectRatio, Avatar, Box, Button, Card, CardActions, CardContent, CardOverflow, CircularProgress, Container, Divider, FormControl, FormHelperText, FormLabel, Grid, IconButton, Input, LinearProgress, Sheet, Typography, styled } from '@mui/joy';

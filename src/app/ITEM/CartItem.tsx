@@ -22,18 +22,18 @@ const CartItem = ({cartItem}:any) => {
     console.log('Data geted ',cartItem);
     return (
         <>
-        <div className="content" style={{maxHeight:'70%',overflow:'auto'}}>
+        <div className="max-h-[70%]  overflow-auto">
         {cartItem?.map((row:any,index:number)=>(
             <Card
             variant="soft"
             orientation="horizontal"
             key={index}
             sx={{
-                width: '100%',
+                width: '90%',
                 '&:hover': { boxShadow: 'md', borderColor: 'rgb(124,124,124)' },
                 margin:2,
-                marginLeft:0,
-                paddingLeft:2,
+                marginLeft:1,
+                padding:2,
                 borderBottom:'1px solid',
                 overflowY:'auto',
                 maxHeight:'70%'
@@ -116,19 +116,19 @@ const CartItem = ({cartItem}:any) => {
             </Container>
         )}
         {totalPrice?(
-            <Container style={{maxWidth:'90%',marginLeft:10,position:'absolute',bottom:10,width:'90%',padding:2,zIndex:1}}>
-                <Paper className="taxes" style={{display:'flex',borderBottom:'1px solid',justifyContent:'space-between',padding:2,marginBottom:3}}>
+            <Container className='shadow-xl bg-slate-300 p-2 rounded-lg absolute bottom-10 x-10' >
+                <div className="flex flex-wrap justify-between mb-3" >
                     <Typography fontWeight="md" fontSize="xl" >Taxes</Typography>
-                    <Typography fontWeight="md" style={{right:0,fontWeight:'bold'}}>0% = 0đ</Typography>
-                </Paper>
-                <Paper className="taxes" style={{display:'flex',borderBottom:'1px solid',justifyContent:'space-between',padding:2,marginBottom:3}}>
+                    <Typography fontWeight="md" style={{right:0,fontWeight:'bold'}}>0%</Typography>
+                </div>
+                <div className="flex flex-wrap justify-between mb-3">
                     <Typography fontWeight="md">Shipping</Typography>
                     <Typography  fontWeight="md" style={{right:0,fontWeight:'bold'}}>Checkout</Typography>
-                </Paper>
-                <Paper className="taxes" style={{display:'flex',borderBottom:'1px solid',justifyContent:'space-between',padding:2,marginBottom:3}}>
+                </div>
+                <div className="flex flex-wrap justify-between ">
                     <Typography fontWeight="md">Total</Typography>
                     <Typography fontWeight="md" style={{right:0,fontWeight:'bold'}}>{totalPrice}{'.000đ'}</Typography>
-                </Paper>
+                </div>
                 <Button  variant='outlined' sx={{
                     '&:hover':{backgroundColor:'green',color:'white'},
                     margin:3,

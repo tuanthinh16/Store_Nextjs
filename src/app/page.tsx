@@ -54,6 +54,7 @@ export default function Home() {
       ):(
         <ProductItem product={product} fallback={<Loading />}/>
       )}
+      
       </div>
     </Container>
     </SnackbarProvider>

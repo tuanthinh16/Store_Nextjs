@@ -1,4 +1,4 @@
-
+'use client'
 import { Product } from '@/app/models/interface';
 import { FavoriteBorder } from '@mui/icons-material';
 import { Avatar, Box, Button, Card, CardActions, CardContent, CircularProgress, Container, Divider, Grid, IconButton, LinearProgress, Sheet, Typography, styled } from '@mui/joy';
@@ -43,7 +43,6 @@ const Products = () => {
         <Grid container spacing={2} sx={{ flexGrow: 1 }}>
             <Grid xs={6} md={4}>
                 <Item>
-                    
                     <AddProduct/>
                 </Item>
             </Grid>
@@ -79,7 +78,7 @@ const  BottomActionsCard = ({products}:any)=> {
             <Card
                 variant="outlined"
                 sx={{
-                    width: 220,
+                    width: 200,
                     // to make the card resizable
                     display:'flex',
                     overflow: 'auto',
@@ -110,9 +109,7 @@ const  BottomActionsCard = ({products}:any)=> {
                 
                 <CardActions buttonFlex="0 1 120px">
                 <Divider orientation="horizontal" inset="context"/>
-                    <IconButton variant="outlined" color="neutral" sx={{ mr: 'auto' }}>
-                        <FavoriteBorder />
-                    </IconButton>
+                    
                     <Button variant="soft" color="warning">
                         Edit
                     </Button>

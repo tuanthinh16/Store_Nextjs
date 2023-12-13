@@ -9,6 +9,7 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
 import { Table } from '@mui/joy';
+import Products from '../../components/item/Products';
 
 const ListProduct = ({product}:any) => {
     const route = useRouter();
@@ -36,31 +37,10 @@ const ListProduct = ({product}:any) => {
         
     }
     return (
-        <>
-            <Table hoverRow>
-            <caption>List Products</caption>
-            <thead>
-                <tr>
-                <th style={{ width: '40%' }}>Menu</th>
-                <th>Calories</th>
-                <th>Fat&nbsp;(g)</th>
-                <th>Carbs&nbsp;(g)</th>
-                <th>Protein&nbsp;(g)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {product?.map((row:any) => (
-                <tr key={row._id}>
-                    <td>{row.name}</td>
-                    <td>{row.calories}</td>
-                    <td>{row.fat}</td>
-                    <td>{row.carbs}</td>
-                    <td>{row.protein}</td>
-                </tr>
-                ))}
-            </tbody>
-            </Table>
-        </>
+        <div className=''>
+            <Products/>
+            
+        </div>
     )
 }
 

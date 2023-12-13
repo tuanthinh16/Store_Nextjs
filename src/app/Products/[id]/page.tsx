@@ -13,6 +13,10 @@ import { useDispatch } from 'react-redux';
 import { increment } from '@/app/store/features/cartSlice';
 import { Product } from '@/app/models/interface';
 import { useSnackbar } from 'notistack';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+
+
 
 const ProductDetail = ({params}:{params:{id:string}}) => {
     const { data: session,status: sessionStatus }: any = useSession();
@@ -66,16 +70,17 @@ const ProductDetail = ({params}:{params:{id:string}}) => {
             </Breadcrumbs>
             {product?.map((row:any,index:number)=>(
                 <Card
-                color="primary"
-                invertedColors={false}
-                orientation="horizontal"
-                size="lg"
-                variant="soft"
-                sx={{ maxWidth: 700 ,display:'flex',position:'relative',margin:'auto'}}
-                key={index}
+                    color="primary"
+                    invertedColors={false}
+                    orientation="horizontal"
+                    size="lg"
+                    variant="soft"
+                    sx={{ maxWidth: 700 ,display:'flex',position:'relative',margin:'auto'}}
+                    key={index}
+                
                 >
-                <div style={{maxWidth:500}}>
-                    <img src={image} defaultValue={row.imageUrl[0]} width={300} height={200} alt='select-image-product'  style={{margin:5,borderRadius:10}}/>
+                <div className='max-w-sm'>
+                    <img src={image} defaultValue={row.imageUrl[0]} width={300} height={200} alt='select-image-product'   style={{margin:5,borderRadius:10}}/>
                     <div style={{display:'flex',maxWidth:500,flexWrap:'wrap'}}>
                         {row['imageUrl']?.map((_image: any, index:number)=>(
                             <img src={_image} onClick={()=> setImage(_image)} width={50} height={50} key={index} style={{margin:5,borderRadius:10}}/>
@@ -197,14 +202,14 @@ const ProductDetail = ({params}:{params:{id:string}}) => {
                         </RadioGroup>
                         </Box>
                     </div>
-                    <div style={{position:'absolute',bottom:20,right:1,width:'50%',display:'flex',alignItems:'center'}}>
-                        <MyButton variant="outlined" style={{width:'40%',marginLeft:15,marginTop:10}} onClick={()=>handleAdd( row) }>Add To Cart</MyButton>
+                    <div >
+                        <MyButton variant="outlined"  onClick={()=>handleAdd( row) }>Add To Cart</MyButton>
                     </div>
                 </div>
             </Card>
             ))}
-            <div style={{marginLeft:'3rem'}}>
-                <h1>Some Review about of product</h1>
+            <div className='md:ml-20 m-6'>
+                <Review/>
             </div>
             </>
         )
@@ -222,3 +227,23 @@ const MyButton = styled(Button)`
         border: 0px;
     }
 `
+const Review = ()=>{
+    return (
+        <div className='max-w-screen shadow-md mt-6 rounded-xl'>
+            <h1 className='font-bold font-xl'>Review</h1>
+            <div className='flex p-2 items-center'>
+                <div className='items-center p-3'>
+                    <AccountCircleIcon fontSize='large'/>
+                    
+                </div>
+                <div>
+                    <h1 className='font-bold text-red-400 '>Username</h1>
+                    <small className='text-green-900 text-xs mt-0'>2023-12-12--23:20</small>
+                    <p>hang rat dep
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    )
+}

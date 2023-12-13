@@ -1,3 +1,4 @@
+'use client'
 import Register from '@/app/user/register/page';
 import { Avatar, Box, Button, ButtonGroup, Card, CardActions, CardContent, CardOverflow, Chip, Container, FormControl, FormHelperText, FormLabel, Grid, IconButton, Input, LinearProgress, Sheet, SvgIcon, Typography, styled } from '@mui/joy';
 import axios from 'axios';
