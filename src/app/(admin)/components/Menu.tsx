@@ -22,8 +22,8 @@ const MenuItem = () => {
         <div className='text-md bg-gray-500 max-w-xs left-6 top-16 rounded-lg p-4 pl-2 md:'>
             <h1 className='text-white'>Dashboard</h1>
             <div className='mb-2 w-full grid'>
-                {tag.map((row)=>(
-                    <Link href={row.nav} className='no-underline text-xl  m-3 p-2 rounded-lg font-bold text-white hover:bg-slate-300'>{row.title}</Link>
+                {tag.map((row:any,index:number)=>(
+                    <Link href={row.nav} key={index} className='no-underline text-xl  m-3 p-2 rounded-lg font-bold text-white hover:bg-slate-300'>{row.title}</Link>
                 ))}
             </div>
             <div className='items-center'>
