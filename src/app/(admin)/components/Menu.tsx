@@ -5,7 +5,7 @@ import React from 'react'
 const tag = [
     {
         title:'Products',
-        nav:'/adminpage/Products'
+        nav:'/adminpage/products'
     },
     {
         title:'Categories',
