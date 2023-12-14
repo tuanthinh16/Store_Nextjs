@@ -41,7 +41,13 @@ const ProductDetail = ({params}:{params:{id:string}}) => {
     const [selectedValue, setSelectedValue] = React.useState('');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedValue(event.target.value);
+        if(selectedValue){
+            setSelectedValue('');
+        }
+        else{
+            setSelectedValue(event.target.value);
+        }
+        
     };
     const [selectedColor, setSelectedColor] = React.useState('');
 
@@ -58,160 +64,112 @@ const ProductDetail = ({params}:{params:{id:string}}) => {
     }
     return (
         sessionStatus =='authenticated'&&(
-            <>
-            <Breadcrumbs separator="›" aria-label="breadcrumbs">
-                    <Link color="primary" href="/Products">
-                        <PublicIcon sx={{ mr: 0.5 }} />
-                            Products
-                        </Link>
-                    <Link  color="success" href="#">Get-Products</Link>
+            <div className=' md:p-3 text-lg font-semibold'>
+                <Breadcrumbs separator="›" aria-label="breadcrumbs">
+                        <Link color="primary" href="/Products">
+                            <PublicIcon sx={{ mr: 0.5 }} />
+                                Products
+                            </Link>
+                        <Link  color="success" href="#">Get-Products</Link>
 
-                    <Typography>ID: {params.id}</Typography>
-            </Breadcrumbs>
-            {product?.map((row:any,index:number)=>(
-                <Card
-                    color="primary"
-                    invertedColors={false}
-                    orientation="horizontal"
-                    size="lg"
-                    variant="soft"
-                    sx={{ maxWidth: 700 ,display:'flex',position:'relative',margin:'auto'}}
-                    key={index}
-                
-                >
-                <div className='max-w-sm'>
-                    <img src={image} defaultValue={row.imageUrl[0]} width={300} height={200} alt='select-image-product'   style={{margin:5,borderRadius:10}}/>
-                    <div style={{display:'flex',maxWidth:500,flexWrap:'wrap'}}>
-                        {row['imageUrl']?.map((_image: any, index:number)=>(
-                            <img src={_image} onClick={()=> setImage(_image)} width={50} height={50} key={index} style={{margin:5,borderRadius:10}}/>
-                        ))}
-                    </div>
-                </div>
-                <div >
-                    <Typography level="h1">{row.title}</Typography>
-                    <Typography level="body-sm">{row.description}</Typography>
-                    <Typography sx={{display:'flex'}}> Price : <p style={{textDecoration:'line-through', marginRight:5,marginLeft:5}}>{(parseInt(row.price) + parseInt(row.price)*10/100)*1000}{'đ'} </p><b style={{color:'green'}}>{parseInt(row.price)*1000}{'đ'}</b></Typography>
-                    <div>
-                    <div style={{display:'flex'}}>
-                        <p style={{paddingTop:7 ,display:'flex'}}>{"("}{row['rating']?.['count']}{")"}{row['rating']?.['rate']}<StarIcon fontSize='small'style={{color:'rgb(187, 149, 26)'}}/></p>
-                        <StarRating initialRating={row['rating']?.['rate']}/> 
-                    </div>
-                    <Box sx={{ resize: 'horizontal', overflow: 'auto', px: 2 }}>
-                        <FormLabel
-                            id="product-size-attribute"
-                            sx={{
-                            mb: 1.5,
-                            fontWeight: 'xl',
-                            textTransform: 'uppercase',
-                            fontSize: 'xs',
-                            letterSpacing: '0.1em',
-                            }}
-                        >
-                            Size
-                        </FormLabel>
-                        <RadioGroup
-                            aria-labelledby="product-size-attribute"
-                            defaultValue="0"
-                            sx={{ gap: 2, mb: 2, flexWrap: 'wrap', flexDirection: 'row' }}
-                        >
-                            { (row.options.size.split(' ').map((size: string) => size.trim()))?.map((item:any) => (
-                            <Sheet
-                                key={item}
-                                sx={{
-                                position: 'relative',
-                                fontSize:'small',
-                                width: 20,
-                                height: 20,
-                                flexShrink: 0,
-                                borderRadius: '50%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                '--joy-focus-outlineOffset': '4px',
-                                '--joy-palette-focusVisible': (theme) =>
-                                    theme.vars.palette.neutral.outlinedBorder,
-                                [`& .${radioClasses.checked}`]: {
-                                    [`& .${radioClasses.label}`]: {
-                                    fontWeight: 'small',
-                                    },
-                                    [`& .${radioClasses.action}`]: {
-                                    '--variant-borderWidth': '2px',
-                                    borderColor: 'text.secondary',
-                                    },
-                                },
-                                [`& .${radioClasses.action}.${radioClasses.focusVisible}`]: {
-                                    outlineWidth: '2px',
-                                },
-                                }}
-                            >
-                                <Radio color="danger" overlay disableIcon value={item} label={item} onChange={handleChange}/>
-                            </Sheet>
+                        <p className='italic'>ID: {params.id}</p>
+                </Breadcrumbs>
+                <div className='md:grid md:grid-cols-2'>
+                    {product?.map((row:any,index:number)=>(
+                    <div key={index} className='md:flex bg-gradient-to-br from-slate-500 to-cyan-300 p-3 rounded-xl md:w-[900px] items-center content-center m-auto shadow-lg'>
+                    <div className='max-w-sm flex md:block py-2 md:px-3'>
+                        <Image src={image||row.imageUrl[0]} width={200} height={150} className='min-w-[200px] md:min-w-[300px]' alt='select-image-product'style={{margin:5,borderRadius:10}}/>
+                        <div className='flex flex-col md:flex-row'>
+                            {row['imageUrl']?.map((_image: any, index:number)=>(
+                                <Image src={_image} onClick={()=> setImage(_image)} width={50} height={20} alt='image' className='' key={index} style={{margin:5,borderRadius:10}}/>
                             ))}
-                            </RadioGroup>
-                            <br/>
-                            <RadioGroup 
-                                aria-labelledby="product-size-attribute"
-                                defaultValue="0"
-                                sx={{ gap: 2, mb: 2, flexWrap: 'wrap', flexDirection: 'row' }}>
-                                <FormLabel
-                                id="product-size-attribute"
-                                    sx={{
-                                    mb: 1.5,
-                                    fontWeight: 'xl',
-                                    textTransform: 'uppercase',
-                                    fontSize: 'xs',
-                                    letterSpacing: '0.1em',
-                                    display:'flex'
-                                    }}
-                                >
-                                    Color
-                                </FormLabel>
-                            { (row.options.color.split(' ').map((size: string) => size.trim()))?.map((item:any) => (
-                            <Sheet
-                                key={item}
-                                sx={{
-                                    position: 'relative',
-                                    width: 20,
-                                    height: 20,
-                                    flexShrink: 0,
-                                    bgcolor: `${item}.solidBg`,
-                                    borderRadius: '50%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <Radio
-                                    overlay
-                                    variant="solid"
-                                    value={item}
-                                    sx={{marginRight:3,
-                                        '&$checked':{
-                                            color: `${item}`,
-                                            backgroundColor:`${item}`
-                                        },
-                                        checked:{
-                                            
-                                        }
-                                    }}
-                                    label={item}
-                                    onChange={handleChangeColor}
-                                />
-                            </Sheet>
-                            ))}
-                        </RadioGroup>
-                        </Box>
+                        </div>
                     </div>
                     <div >
-                        <MyButton variant="outlined"  onClick={()=>handleAdd( row) }>Add To Cart</MyButton>
+                        <div className='text-2xl'>
+                            <StarRating initialRating={row.rating?.rate}/>
+                        </div>
+                        <div>
+                            <Typography level="h1">{row.title}</Typography>
+                            <Typography level="body-sm">{row.description}</Typography>
+                        </div>
+                        
+                        <div>
+                            <Box sx={{ resize: 'horizontal', overflow: 'auto', px: 2,mt:10 }}>
+                                <div className='flex gap-2 md:items-center text-center'>
+                                    <RadioGroup
+                                        aria-labelledby="product-size-attribute"
+                                        defaultValue='0'
+                                        sx={{ gap: 1, flexWrap: 'wrap', flexDirection: 'row' ,alignItems: 'center'}}
+                                    >
+                                            {selectedValue ?(
+                                                <Radio color="danger" disableIcon value={selectedValue} key={selectedValue} label={selectedValue} onChange={handleChange} className='p-1 focus:bg-red-400'/>
+                                            ):(
+                                                (row.options.size.split(' ').map((size: string) => size.trim()))?.map((item:any) => (
+                                                    <Radio color="danger" disableIcon value={item.trim()} key={item} label={item} onChange={handleChange} className='p-1 mt-2 m-auto focus:bg-red-400'/>
+                                                ))
+                                            )}
+                                        
+                                    </RadioGroup>
+                                </div>
+
+                                <div className='flex gap-2 items-center text-center'>
+
+                                    <RadioGroup 
+                                    aria-labelledby="product-size-attribute"
+                                    defaultValue="0"
+                                    sx={{ gap: 2, mb: 2, flexWrap: 'wrap', flexDirection: 'row' }}>
+                                    {selectedColor?(
+                                        <Radio
+                                        disableIcon
+                                        variant="solid"
+                                        value={selectedColor}
+                                        label={selectedColor}
+                                        onChange={handleChangeColor}
+                                        key={selectedColor}
+                                        className='p-1 m-auto mt-4 rounded-full w-10 h-7 text-xs'
+                                        color={selectedColor=='red'?'danger':(selectedColor=='yellow'?'warning':(selectedColor=='green'?'success':'primary'))}
+                                    />
+                                    ):(
+                                        (row.options.color.split(' ').map((size: string) => size.trim()))?.map((item:any) => (
+                                            <Radio
+                                                disableIcon
+                                                variant="solid"
+                                                value={item}
+                                                label={item}
+                                                onChange={handleChangeColor}
+                                                key={item}
+                                                className='p-1 m-auto mt-4 rounded-full w-10 h-7 text-xs'
+                                                color={item=='red'?'danger':(item=='yellow'?'warning':(item=='green'?'success':'primary'))}
+                                            />
+                                        ))
+                                    )}
+                                </RadioGroup>
+                                </div>
+                                
+                            </Box>
+                            <div className='ml-5 font-bold text-xl py-2'>
+                                <p>{row.price}{'K'}</p>
+                            </div>
+                        </div>
+                        <div >
+                            <MyButton variant="outlined" color='primary' onClick={()=>handleAdd( row) }>Add To Cart</MyButton>
+                        </div>
                     </div>
                 </div>
-            </Card>
-            ))}
-            <div className='md:ml-20 m-6'>
-                <Review/>
+                ))}
+                    <div>
+                        <div>
+                            <Star product = {product}/>
+                        </div>
+                        <div className='md:ml-20 m-6'>
+                            <Review/>
+                        </div>
+                    </div>
+                    
+                </div>
+            
             </div>
-            </>
         )
         
     )
@@ -219,18 +177,58 @@ const ProductDetail = ({params}:{params:{id:string}}) => {
 
 export default ProductDetail;
 const MyButton = styled(Button)`
+    border: 1px solid #419b45;
+    margin:auto;
     &:hover{
-        width: 70%;
-        background-color: #13ad1a;
+        background-color: #419b45;
         color: white;
         font-weight: bold;
         border: 0px;
     }
 `
+const Star = ({product}:any)=>{
+    return (
+        <div className='grid grid-cols-5 items-center my-4 md:w-[900px] m-auto'>
+            <div className='border-r-2 col-span-2 m-auto p-3'>
+                <p className='text-center font-bold text-2xl'>{product[0].rating?.rate}</p>
+                <div className='text-sm p-1 flex md:text-lg'>
+                    <StarRating initialRating={product[0].rating?.rate}/>
+                </div>
+                <p className='text-center underline text-sm'>{product[0].rating?.count}{' Reviewer'}</p>
+            </div>
+            <div className='col-span-3 grid grid-cols-2 text-sm items-center p-1 md:text-lg gap-3'>
+                <div>
+                    <p className='text-bold'>Perfect</p>
+                    <div className=''>
+                        <StarRating initialRating={5}/>
+                    </div>
+                </div>
+                <div>
+                    <p className='text-bold '>Comfortable</p>
+                    <div className=''>
+                        <StarRating initialRating={4}/>
+                    </div>
+                </div>
+                <div>
+                    <p className='text-bold '>Good</p>
+                    <div className=''>
+                        <StarRating initialRating={3}/>
+                    </div>
+                </div>
+                <div>
+                    <p className='text-bold'>Not Bad</p>
+                    <div className=''>
+                        <StarRating initialRating={2}/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
 const Review = ()=>{
     return (
-        <div className='max-w-screen shadow-md mt-6 rounded-xl'>
-            <h1 className='font-bold font-xl'>Review</h1>
+        <div className=' shadow-md m-auto rounded-xl p-3'>
+            <h1 className='font-bold font-xl py-5'>Review</h1>
             <div className='flex p-2 items-center'>
                 <div className='items-center p-3'>
                     <AccountCircleIcon fontSize='large'/>

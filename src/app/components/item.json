@@ -4,30 +4,23 @@
         "bootstrap": [
         {
             "id": 1,
-            "title": "Photography",
-            "body": "Bootstrap Carousel Example",
-            "imageUrl": "https://res.cloudinary.com/dwweabf16/image/upload/v1701430147/pexels-tram-tran-7885335_tmpxwb.jpg",
-            "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
+            "title": "Nike",
+            "body": "We have a lots of products from Nike",
+            "imageUrl": "https://cafefcdn.com/thumb_w/640/203337114487263232/2022/12/7/photo1670409187245-16704091874871004255991.jpg",
+            "docs": "https://cafef.vn/viet-nam-se-thanh-cu-diem-toan-cau-cua-nike-20221207173531247.chn"
         },
         {
             "id": 2,
-            "title": "City Views",
-            "body": "Bootstrap Carousel Example",
-            "imageUrl": "https://res.cloudinary.com/dwweabf16/image/upload/v1701430149/pexels-matteus-silva-13742840_sc1ujx.jpg",
+            "title": "Adidas",
+            "body": "A most of best products",
+            "imageUrl": "https://toquoc.mediacdn.vn/280518851207290880/2023/2/7/587109-1675735615766384731334.jpeg",
             "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
         },
         {
             "id": 3,
-            "title": "Wild Life",
-            "body": "Bootstrap Carousel Example",
-            "imageUrl": "https://res.cloudinary.com/dwweabf16/image/upload/v1701430211/pexels-alessio-cesario-1906839_lkktvo.jpg",
-            "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
-        },
-        {
-            "id": 4,
-            "title": "Foods and Culture",
-            "body": "Bootstrap Carousel Example",
-            "imageUrl": "https://res.cloudinary.com/dwweabf16/image/upload/v1701430212/pexels-tu-nguyen-19153538_hbc1ce.jpg",
+            "title": "Louis Vuitton",
+            "body": "Louis Vuitton",
+            "imageUrl": "https://media.vneconomy.vn/w800/images/upload/2022/12/19/lv1.png",
             "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
         }
         ]

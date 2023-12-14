@@ -19,7 +19,10 @@ import { Product } from '../models/interface';
 import { useSnackbar } from 'notistack';
 import { Box, FormLabel, Radio, RadioGroup, Sheet, radioClasses } from '@mui/joy';
 import { Done } from '@mui/icons-material';
-
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import Image from 'next/image';
 
 const ProductItem = ({product}:any) => {
     const dispatch = useAppDispatch();
@@ -50,154 +53,39 @@ const ProductItem = ({product}:any) => {
         enqueueSnackbar('Add to cart successful', {variant:'success'})
     }
     return (
-        <>
-        {product?.map((row:any,index:number)=>(
-            <Card sx={{ width: 320, maxWidth: '100%', boxShadow: 'lg',marginLeft:5,marginBottom:5 }} key={index}>
-                <CardOverflow>
-                <AspectRatio sx={{ minWidth: 200 }}>
-                    <img
-                    src={row.imageUrl[0]}
-                    loading="lazy"
-                    alt=""
-                    />
-                </AspectRatio>
-                </CardOverflow>
-                <CardContent>
-                <Typography level="body-xs">{row.category}</Typography>
-                <Link
-                    href={'/Products/' + row._id}
-                    fontWeight="md"
-                    color="neutral"
-                    textColor="text.primary"
-                    overlay
-                    endDecorator={<ArrowOutwardIcon />}
-                >
-                    {row.title}
-                </Link>
-        
-                <Typography
-                    level="title-lg"
-                    sx={{ mt: 1, fontWeight: 'xl' }}
-                    endDecorator={
-                    <Chip component="span" size="sm" variant="soft" color="success">
-                        Lowest price
-                    </Chip>
-                    }
-                >
-                    {row.price}{'.000đ'}
-                </Typography>
-                <Typography level="body-sm">
-                    (Only <b>7</b> left in stock!)
-                    <StarRating initialRating={row['rating']?.['rate']}/>
-                </Typography>
-                    <Box sx={{ resize: 'horizontal', overflow: 'auto', px: 2 }}>
-                    
-                        <FormLabel
-                            id="product-size-attribute"
-                            sx={{
-                            mb: 1.5,
-                            fontWeight: 'xl',
-                            textTransform: 'uppercase',
-                            fontSize: 'xs',
-                            letterSpacing: '0.1em',
-                            }}
-                        >
-                            Size
-                        </FormLabel>
-                        <RadioGroup
-                            aria-labelledby="product-size-attribute"
-                            defaultValue="0"
-                            sx={{ gap: 2, mb: 2, flexWrap: 'wrap', flexDirection: 'row' }}
-                        >
-                            { (row.options.size.split(' ').map((size: string) => size.trim()))?.map((item:any) => (
-                            <Sheet
-                                key={item}
-                                sx={{
-                                position: 'relative',
-                                fontSize:'small',
-                                width: 20,
-                                height: 20,
-                                flexShrink: 0,
-                                borderRadius: '50%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                '--joy-focus-outlineOffset': '4px',
-                                '--joy-palette-focusVisible': (theme) =>
-                                    theme.vars.palette.neutral.outlinedBorder,
-                                [`& .${radioClasses.checked}`]: {
-                                    [`& .${radioClasses.label}`]: {
-                                    fontWeight: 'small',
-                                    },
-                                    [`& .${radioClasses.action}`]: {
-                                    '--variant-borderWidth': '2px',
-                                    borderColor: 'text.secondary',
-                                    },
-                                },
-                                [`& .${radioClasses.action}.${radioClasses.focusVisible}`]: {
-                                    outlineWidth: '2px',
-                                },
-                                }}
-                            >
-                                <Radio color="danger" overlay disableIcon value={item} label={item} onChange={handleChange}/>
-                            </Sheet>
-                            ))}
-                            </RadioGroup>
-                            <br/>
-                            <RadioGroup 
-                                aria-labelledby="product-size-attribute"
-                                defaultValue="0"
-                                sx={{ gap: 2, mb: 2, flexWrap: 'wrap', flexDirection: 'row' }}>
-                                <FormLabel
-                                id="product-size-attribute"
-                                    sx={{
-                                    mb: 1.5,
-                                    fontWeight: 'xl',
-                                    textTransform: 'uppercase',
-                                    fontSize: 'xs',
-                                    letterSpacing: '0.1em',
-                                    display:'flex'
-                                    }}
-                                >
-                                    Color
-                                </FormLabel>
-                            { (row.options.color.split(' ').map((size: string) => size.trim()))?.map((item:any) => (
-                            <Sheet
-                                key={item}
-                                sx={{
-                                    position: 'relative',
-                                    width: 40,
-                                    height: 40,
-                                    flexShrink: 0,
-                                    bgcolor: `${item}.solidBg`,
-                                    borderRadius: '50%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <Radio
-                                    overlay
-                                    variant="solid"
-                                    value={item}
-                                    sx={{}}
-                                    label={item}
-                                    onChange={handleChangeColor}
-                                />
-                            </Sheet>
-                            ))}
-                        </RadioGroup>
-                        </Box>
-                </CardContent>
-                <CardOverflow>
-                <Button variant="soft" color="danger" size="lg" onClick={()=> handleAddCart(row)}>
-                    Add to cart
-                </Button>
-                </CardOverflow>
-            </Card>
-        ))}
-        </>
+        <div className='flex flex-wrap ml-2'>
+            {product?.map((item:any,index:number)=>(
+                <div key={index} className='w-[300px] bg-slate-300 rounded-lg relative m-3 shadow-xl'>
+                    <div className='h-[200px] text-center p-3 font-semibold text-2xl'>{item.title}</div>
+                    <div>
+                        <Image src={item.imageUrl[0]} alt="image" width={250} height={250} className=' mx-[25px] absolute top-[60px] rounded-3xl shadow-2xl'/>
+                    </div>
+                    <div className='bg-gradient-to-b from-slate-300 to-amber-400 pb-3 rounded-t-lg pt-[120px] text-lg pl-5 font-normal'>
+                        <p className='cursor-pointer'>
+                            <CategoryOutlinedIcon fontSize='medium' className='mr-2 '/>
+                            {item.category}
+                        </p>
+                        <p>
+                            <LocalShippingOutlinedIcon className='mr-2'/>
+                            Delivery on 3 days
+                        </p>
+                        <p>
+                            <MonetizationOnOutlinedIcon className='mr-2'/>
+                            {parseInt(item.price)}{'K'}
+                        </p>
+                    </div>
+                    <div className='grid grid-cols-2 p-3 items-center text-center font-medium bg-slate-200 rounded-b-lg'>
+                        <div className=' rounded-lg hover:bg-gradient-to-br from-green-300 to-blue-600 p-2 mr-2'>
+                            <button className='font-bold hover:text-white' onClick={()=> handleAddCart(item)}>ADD CART</button>
+                        </div>
+                        <div className='rounded-lg hover:bg-gradient-to-br from-orange-300 to-gray-600 p-2'>
+                            <button className='font-bold hover:text-white' onClick={()=> route.push('/Products/' + item._id)}>VIEW</button>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
     )
 }
 
-export default ProductItem
+export default ProductItem;

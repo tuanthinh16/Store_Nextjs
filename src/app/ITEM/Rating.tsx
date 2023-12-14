@@ -15,10 +15,8 @@ const StarRating = ({ initialRating, onChange }:any) => {
         {[1, 2, 3, 4, 5].map((star) => (
             <span
             key={star}
-            onClick={() => handleStarClick(star)}
             style={{
                 cursor: 'pointer',
-                fontSize: '1.5rem',
                 color:
                 star <= Math.floor(rating)
                     ? 'gold'

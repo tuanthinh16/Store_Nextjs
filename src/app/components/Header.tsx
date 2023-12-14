@@ -119,7 +119,7 @@ const Header = () => {
         (state) => state.cart.cartItems
     );
     return (
-        <MyAppBar position="fixed">
+        <MyAppBar position="fixed" className='bg-gradient-to-r from-cyan-300 to-slate-500'>
         <Container style={{position:'relative',maxWidth:'90%'}}>
             <Toolbar disableGutters >
                 {/* <Image src={logo} width={100} height={50} alt={'logo'}/> */}

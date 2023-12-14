@@ -27,33 +27,18 @@ export default function BootstrapCarousel() {
     }, []);
     return (
         <>
-        {mobile?(
-            <Carousel activeIndex={index} onSelect={handleSelect} style={{maxWidth:'100vw',maxHeight:'400px'}}>
-            {bootstrap.map((item) => (
-                <Carousel.Item key={item.id}  interval={4000}>
-                <Image src={item.imageUrl} alt="slides"  height={400}/>
-                <Carousel.Caption >
-                    <h3>{item.title}</h3>
-                    <p>{item.body}</p>
-                    <button className="btn btn-danger">Connect Us</button>
-                </Carousel.Caption>
-                </Carousel.Item>
-            ))}
-            </Carousel>
-        ):(
-            <Carousel activeIndex={index} onSelect={handleSelect} style={{maxWidth:'100vw',maxHeight:'750px'}}>
-            {bootstrap.map((item) => (
-                <Carousel.Item key={item.id}  interval={4000}>
-                <img src={item.imageUrl} alt="slides" width='100%' height={750}/>
-                <Carousel.Caption >
-                    <h3>{item.title}</h3>
-                    <p>{item.body}</p>
-                    <button className="btn btn-danger">Connect Us</button>
-                </Carousel.Caption>
-                </Carousel.Item>
-            ))}
-            </Carousel> 
-        )}
+        <Carousel activeIndex={index} onSelect={handleSelect}  className="rounded-md py-3">
+        {bootstrap.map((item) => (
+            <Carousel.Item key={item.id}  interval={4000}>
+                <img src={item.imageUrl} alt="slides" width='100%' className="h-[300px] md:h-[500px] lg:h-[700px]"/>
+            <Carousel.Caption >
+                <h3 className="text-lg font-semibold">{item.title}</h3>
+                
+                <button className="py-1 px-4 mt-2 rounded-2xl bg-red-500">Connect</button>
+            </Carousel.Caption>
+            </Carousel.Item>
+        ))}
+        </Carousel> 
         </>
     );
 }
