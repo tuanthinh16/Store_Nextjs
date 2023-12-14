@@ -45,7 +45,6 @@ const ProductItem = ({product}:any) => {
         setSelectedColor(event.target.value);
     };
 
-    console.log(product);
     const handleAddCart = (data:Product)=>{
         data.options.size = selectedValue;
         data.options.color = selectedColor;

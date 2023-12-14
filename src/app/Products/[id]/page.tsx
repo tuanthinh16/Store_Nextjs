@@ -139,7 +139,7 @@ const ProductDetail = ({params}:{params:{id:string}}) => {
                                                 label={item}
                                                 onChange={handleChangeColor}
                                                 key={item}
-                                                className='p-1 m-auto mt-4 rounded-full w-10 h-7 text-xs'
+                                                className='p-1 m-auto mt-4 rounded-full  h-7 text-xs'
                                                 color={item=='red'?'danger':(item=='yellow'?'warning':(item=='green'?'success':'primary'))}
                                             />
                                         ))
@@ -160,7 +160,7 @@ const ProductDetail = ({params}:{params:{id:string}}) => {
                 ))}
                     <div>
                         <div>
-                            <Star product = {product}/>
+                            <Star product = {product[0]}/>
                         </div>
                         <div className='md:ml-20 m-6'>
                             <Review/>
@@ -187,14 +187,16 @@ const MyButton = styled(Button)`
     }
 `
 const Star = ({product}:any)=>{
+    console.log('data on star',typeof(product?.rating?.rate));
+    const rate = product?.rating?.rate || 0;
     return (
         <div className='grid grid-cols-5 items-center my-4 md:w-[900px] m-auto'>
             <div className='border-r-2 col-span-2 m-auto p-3'>
-                <p className='text-center font-bold text-2xl'>{product[0].rating?.rate}</p>
+                <p className='text-center font-bold text-2xl'>{product?.rating?.rate}</p>
                 <div className='text-sm p-1 flex md:text-lg'>
-                    <StarRating initialRating={product[0].rating?.rate}/>
+                    <StarRating initialRating={rate}/>
                 </div>
-                <p className='text-center underline text-sm'>{product[0].rating?.count}{' Reviewer'}</p>
+                <p className='text-center underline text-sm'>{product?.rating?.count}{' Reviewer'}</p>
             </div>
             <div className='col-span-3 grid grid-cols-2 text-sm items-center p-1 md:text-lg gap-3'>
                 <div>
