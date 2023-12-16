@@ -74,9 +74,9 @@ const ProductDetail = ({params}:{params:{id:string}}) => {
 
                         <p className='italic'>ID: {params.id}</p>
                 </Breadcrumbs>
-                <div className='md:grid md:grid-cols-2'>
+                <div className='md:grid md:grid-cols-2 dark:text-white'>
                     {product?.map((row:any,index:number)=>(
-                    <div key={index} className='md:flex bg-gradient-to-br from-slate-500 to-cyan-300 p-3 rounded-xl md:w-[900px] items-center content-center m-auto shadow-lg'>
+                    <div key={index} className='md:flex bg-gradient-to-br from-slate-500 to-cyan-300 dark:bg-orange-200 p-3 rounded-xl md:w-[900px] items-center content-center m-auto shadow-lg'>
                     <div className='max-w-sm flex md:block py-2 md:px-3'>
                         <Image src={image||row.imageUrl[0]} width={200} height={150} className='min-w-[200px] md:min-w-[300px]' alt='select-image-product'style={{margin:5,borderRadius:10}}/>
                         <div className='flex flex-col md:flex-row'>
@@ -192,13 +192,15 @@ const Star = ({product}:any)=>{
     return (
         <div className='grid grid-cols-5 items-center my-4 md:w-[900px] m-auto'>
             <div className='border-r-2 col-span-2 m-auto p-3'>
-                <p className='text-center font-bold text-2xl'>{product?.rating?.rate}</p>
+                <p className='text-center font-bold text-2xl'>{rate}</p>
                 <div className='text-sm p-1 flex md:text-lg'>
+                    <div>
                     <StarRating initialRating={rate}/>
+                    </div>
                 </div>
                 <p className='text-center underline text-sm'>{product?.rating?.count}{' Reviewer'}</p>
             </div>
-            <div className='col-span-3 grid grid-cols-2 text-sm items-center p-1 md:text-lg gap-3'>
+            <div className='col-span-3 grid grid-cols-2 text-sm items-center p-1 md:text-lg gap-2 md:gap-3'>
                 <div>
                     <p className='text-bold'>Perfect</p>
                     <div className=''>

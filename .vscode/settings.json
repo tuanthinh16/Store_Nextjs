@@ -1,0 +1,15 @@
+{
+    "cSpell.enableFiletypes": [
+        "!c",
+        "!csharp",
+        "!jade",
+        "!jupyter",
+        "!markdown",
+        "!php",
+        "!pug",
+        "!rust",
+        "!scala",
+        "!swift",
+        "!vue"
+    ]
+}

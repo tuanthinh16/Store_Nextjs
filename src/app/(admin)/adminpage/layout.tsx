@@ -7,7 +7,7 @@ import MenuItem from '../components/Menu';
 export default function Adminlayout({children}: {children: React.ReactNode}) {
     return (
     <html lang="en">
-        <body>
+        <body className='dark:bg-slate-400 dark:text-white'>
             <div>
                 <div>
                     <Header/>

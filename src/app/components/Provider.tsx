@@ -10,7 +10,7 @@ interface Props {
 const Providers = (props: Props) => {
     return (
         <SnackbarProvider maxSnack={3}>
-        <Provider store={store}>{props.children}</Provider>
+            <Provider store={store}>{props.children}</Provider>
         </SnackbarProvider>
     );
 };

@@ -19,7 +19,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import logo from '../../../public/logo.png';
-import { Badge, Button, DialogTitle, Drawer, ModalClose } from '@mui/joy';
+import { Badge, Button, DialogTitle, Drawer, ModalClose, Switch } from '@mui/joy';
 const pages = ['Products', 'Categories', 'Wallet'];
 import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next';
 import { signOut, useSession } from "next-auth/react";
@@ -30,8 +30,8 @@ import { useSelector } from 'react-redux';
 import { useAppSelector  } from '../store/store';
 import { totalCartItemsSelector } from '../store/features/cartSlice';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-
-
+import Brightness4OutlinedIcon from '@mui/icons-material/Brightness4Outlined';
+import { useTheme } from 'next-themes';
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -81,6 +81,11 @@ const MyAppBar = styled(AppBar)`
     }
 `;
 const Header = () => {
+    const [mounted, setMounted] = React.useState(false)
+    const { theme, setTheme } = useTheme()
+
+
+
     const route = useRouter();
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -118,6 +123,11 @@ const Header = () => {
     const cartItems = useAppSelector(
         (state) => state.cart.cartItems
     );
+    React.useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if(!mounted) return null;
     return (
         <MyAppBar position="fixed" className='bg-gradient-to-r from-cyan-300 to-slate-500'>
         <Container style={{position:'relative',maxWidth:'90%'}}>
@@ -170,15 +180,14 @@ const Header = () => {
                     display: { xs: 'block', md: 'none' },
                     }}
                 >
-                    <div><Search>
-                        <SearchIconWrapper>
-                        <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                        placeholder="Search…"
-                        inputProps={{ 'aria-label': 'search' }}
-                        />
-                </Search></div>
+                    <div>
+                        <Search>
+                            <SearchIconWrapper>
+                            <SearchIcon />
+                            </SearchIconWrapper>
+                            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }}/>
+                        </Search>
+                </div>
                     {pages.map((page) => (
                     <MenuItem key={page} onClick={()=>handleClick(page)}>
                         <Typography textAlign="center">{page}</Typography>
@@ -202,7 +211,7 @@ const Header = () => {
                     textDecoration: 'none',
                 }}
                 >
-                Thinh Store
+                {'Thinh Store'}
                 </Typography>
                 
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -235,15 +244,27 @@ const Header = () => {
                         <Typography fontSize="l">
                             <Button style={{borderRadius:'25px'}} onClick={() => setOpenCart(true)} >🛒</Button>
                         </Typography>
-                        <Box sx={{ display: 'flex' }}>
+                        <div className='flex dark:bg-slate-400'>
                             <Drawer open={openCart} onClose={() => setOpenCart(false)} anchor="right" size="sm" sx={{position:'relative'}}>
                                 <ModalClose />
                                 <DialogTitle level='h2'> My Cart</DialogTitle>
                                 <CartItem cartItem={cartItems}/>
                             </Drawer>
-                        </Box>
+                        </div>
                     </Badge>
-                
+                    <div>
+                        <Switch size='lg' checked={theme === 'dark'} onChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')} 
+                        slotProps={{
+                            input: { 'aria-label': 'Dark mode' },
+                            thumb: {
+                            children: <Brightness4OutlinedIcon />,
+                            },
+                        }}
+                        sx={{
+                            '--Switch-thumbSize': '16px',
+                            padding:1
+                        }} />
+                    </div>
                 <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <AccountBoxIcon fontSize='large'/>

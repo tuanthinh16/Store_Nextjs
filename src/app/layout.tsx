@@ -7,6 +7,7 @@ import { getServerSession } from 'next-auth'
 import SessionProvider from './components/SessionProvider'
 import Providers from './components/Provider'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ProvidersTheme } from './providers'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -27,18 +28,20 @@ export default async function RootLayout({
     <html lang="en">
       
       <body className={inter.className}>
-      <Providers>
-        <SessionProvider session={session} >
-        
-          <Header/>
-          <div style={{marginTop:"7rem",marginBottom:'3rem'}}>
-          
-            {children}
-          </div>
-          <Footer/>
-        </SessionProvider>
-        </Providers>
-        </body>
+        <ProvidersTheme>
+          <Providers>
+            <SessionProvider session={session} >
+              <div className='dark:bg-gradient-to-b dark:from-slate-300 dark:to-gray-700 bg-gradient-to-b from-[#f4f4f5] to-[#f0dcbb] dark:text-white dark:font-bold'>
+                <Header/>
+                <div className='pt-[7rem]'>
+                  {children}
+                </div>
+                <Footer/>
+              </div>
+            </SessionProvider>
+            </Providers>
+        </ProvidersTheme>
+      </body>
     </html>
   )
 }

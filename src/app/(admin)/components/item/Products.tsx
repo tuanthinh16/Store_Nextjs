@@ -40,16 +40,14 @@ const Products = () => {
         <>
         <Typography fontSize='large' sx={{padding:3,fontWeight:'bold',color:'rgb(123,123,123)'}}>Manage Products</Typography>
         <LinearProgress color="success" variant="soft" />
-        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-            <Grid xs={6} md={4}>
-                <Item>
-                    <AddProduct/>
-                </Item>
-            </Grid>
-            <Grid xs={6} md={8}>
-                <Item style={{display:'flex',flexWrap:'wrap'}}><BottomActionsCard products ={product}/></Item>
-            </Grid>
-        </Grid>
+        <div className='grid md:grid-cols-3 grid-cols-1 p-2 mr-5'>
+            <div className='md:col-span-1 ml-5 shadow-lg'>
+                <AddProduct/>
+            </div>
+            <div className='flex flex-wrap col-span-2'>
+                <BottomActionsCard products ={product}/>    
+            </div>
+        </div>
         </>
     )
 }
@@ -73,7 +71,7 @@ const  BottomActionsCard = ({products}:any)=> {
         
     }
     return (
-        <>
+        <div className='flex flex-wrap ml-5 '>
         {products?.map((item:any,index:number)=>(
             <Card
                 variant="outlined"
@@ -84,6 +82,7 @@ const  BottomActionsCard = ({products}:any)=> {
                     overflow: 'auto',
                     resize: 'horizontal',
                     margin:2,
+                    backgroundColor:'rgba(136, 132, 132, 0.575)'
                     // backgroundImage:`url(${item.imageUrl[0]})`,
                     
                 }}
@@ -119,7 +118,7 @@ const  BottomActionsCard = ({products}:any)=> {
                 </CardActions>
             </Card>
         ))}
-        </>
+        </div>
     );
 }
 const AddProduct = ()=>{
@@ -228,7 +227,7 @@ const AddProduct = ()=>{
     };
     
     return(
-        <Container>
+        <div className='shadow-lg dark:bg-slate-500 dark:text-white p-5'>
             <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Form.Label style={{marginLeft:1,float:'left',fontWeight:'bold',fontSize:'medium'}}>Name </Form.Label>
@@ -276,12 +275,12 @@ const AddProduct = ()=>{
                     <Button variant='soft' style={{width:'30%',margin:'auto'}} onClick={onAdd}>ADD</Button>
                 ):(
                     <>
-                        <Button variant='soft' style={{width:'30%',margin:'auto'}} onClick={onAdd}>ADD</Button>
-                        <CircularProgress variant='solid' color="success" /><p>{'uploading image'}</p>
+                        {/* <Button variant='soft' style={{width:'30%',margin:'auto'}} onClick={onAdd}>ADD</Button> */}
+                        <CircularProgress variant='solid' color="success" /><p>{'Uploading Image'}</p>
                     </>
                 )}
             </Form.Group>
             </Form>
-        </Container>
+        </div>
     )
 }

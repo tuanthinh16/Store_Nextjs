@@ -22,7 +22,7 @@ const CartItem = ({cartItem}:any) => {
     console.log('Data geted ',cartItem);
     return (
         <>
-        <div className="max-h-[70%]  overflow-auto">
+        <div className="max-h-[70%]  overflow-auto ">
         {cartItem?.map((row:any,index:number)=>(
             <Card
             variant="soft"

@@ -40,16 +40,14 @@ const Category = () => {
         <>
         <Typography fontSize='large' sx={{padding:3,fontWeight:'bold',color:'rgb(123,123,123)'}}>Manage Category</Typography>
         <LinearProgress color="success" variant="soft" size="lg" />
-        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-            <Grid xs={6} md={4}>
-                <Item>
-                    <AddProduct/>
-                </Item>
-            </Grid>
-            <Grid xs={6} md={8}>
-                <Item style={{display:'flex',flexWrap:'wrap'}}><BottomActionsCard cate ={cate}/></Item>
-            </Grid>
-        </Grid>
+        <div className='grid grid-cols-1 md:grid-cols-3 p-2 items-center m-auto gap-3'>
+            <div className='p-2 mb-5 shadow-lg rounded-lg'>
+                <AddProduct/>
+            </div>
+            <div className='p-2 flex flex-wrap md:col-span-2'>
+                <BottomActionsCard cate ={cate}/>
+            </div>
+        </div>
         </>
     )
 }

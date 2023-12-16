@@ -1,5 +1,4 @@
 'use client'
-import Register from '@/app/user/register/page';
 import { Avatar, Box, Button, ButtonGroup, Card, CardActions, CardContent, CardOverflow, Chip, Container, FormControl, FormHelperText, FormLabel, Grid, IconButton, Input, LinearProgress, Sheet, SvgIcon, Typography, styled } from '@mui/joy';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
@@ -20,24 +19,56 @@ const UserAccount = () => {
         <>
         <Typography fontSize='large' sx={{padding:3,fontWeight:'bold',color:'rgb(123,123,123)'}}>Manage User</Typography>
         <LinearProgress color="success" variant="soft" />
-        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-            <Grid xs={6} md={4}>
-                <Item>
-                    <Register/>
-                    
-                </Item>
-            </Grid>
-            <Grid xs={6} md={8}>
-                <Item style={{display:'flex',flexWrap:'wrap'}}><BioCard/></Item>
-            </Grid>
-        </Grid>
+        <div className='grid grid-cols-1 md:flex md:flex-wrap p-2 gap-3'>
+            <div className=''>
+                <RegisterCard/>
+            </div>
+            <div className='md:flex md:flex-wrap'>
+                <BioCard/>
+            </div>
+        </div>
+        
+        
         </>
     )
 }
 
 export default UserAccount;
 
-
+export const RegisterCard = ()=>{
+    return (
+        <div className='shadow-xl bg-gradient-to-b p-3 rounded-xl w-[340px] m-auto from-slate-400 to-gray-500'>
+            <div>
+                <p className='text-xl font-bold m-auto p-5'>Create New Account</p>
+            </div>
+            <div className='flex flex-col gap-4 '>
+                <div className='grid grid-cols-2'>
+                    <div>
+                        <input type="text" className='w-[150px] rounded-xl h-10 px-2 text-lg' placeholder='First Name'/>
+                    </div>
+                    <div>
+                        <input type="text" className='w-[150px] rounded-xl h-10 px-2 text-lg' placeholder='Last Name'/>
+                    </div>
+                </div>
+                <div>
+                    <input type="email" className='w-[300px] rounded-xl h-10 px-2 text-lg' placeholder='Email'/>
+                </div>
+                <div>
+                    <input type="text" className='w-[300px] rounded-xl h-10 px-2 text-lg' placeholder='Username'/>
+                </div>
+                <div>
+                    <input type="text" className='w-[300px] rounded-xl h-10 px-2 text-lg' placeholder='Phone'/>
+                </div>
+                <div>
+                    <input type="password" className='w-[300px] rounded-xl h-10 px-2 text-lg' placeholder='Password'/>
+                </div>
+                <div>
+                    <button className='hover:bg-[#4945F9] w-[300px] px-5 py-2 text-white text-lg font-semibold bg-[#8589E4] rounded-xl'>Create Account</button>
+                </div>
+            </div>
+        </div>
+    );
+}
 export const  BioCard=()=> {
     const { data: session }: any = useSession();
     const [user,setUser] = React.useState<any[]>([]);
@@ -56,7 +87,7 @@ export const  BioCard=()=> {
         });
     }    
     return (
-        <>
+        <div className='flex flex-wrap'>
         {user?.map((item:any,index:number)=>(
             <Card
             sx={{
@@ -184,7 +215,7 @@ export const  BioCard=()=> {
             </CardOverflow>
             </Card>
         ))}
-        </>
+        </div>
         
     );
 }

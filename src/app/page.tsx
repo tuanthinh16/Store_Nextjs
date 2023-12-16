@@ -48,7 +48,7 @@ export default function Home() {
     <NextThemesProvider attribute="class" defaultTheme="light">
       <SnackbarProvider maxSnack={3}>
         <Container style={{maxWidth:'100%'}}>
-          <div className='py-3'>
+          <div className='flex flex-col gap-5'>
             <ColorInversionMarketing/>
             <BootstrapCarousel/>
           </div>

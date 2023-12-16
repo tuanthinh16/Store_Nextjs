@@ -57,10 +57,10 @@ const ProductItem = ({product}:any) => {
                 <div key={index} className='w-[300px] bg-slate-300 rounded-lg relative m-3 shadow-xl'>
                     <div className='h-[200px] text-center p-3 font-semibold text-2xl'>{item.title}</div>
                     <div>
-                        <Image src={item.imageUrl[0]} alt="image" width={250} height={250} className=' mx-[25px] absolute top-[60px] rounded-3xl shadow-2xl'/>
+                        <Image src={item.imageUrl[0]} alt="image" width={250} height={250} className='max-h-[250px] mx-[25px] absolute top-[60px] rounded-3xl shadow-2xl'/>
                     </div>
                     <div className='bg-gradient-to-b from-slate-300 to-amber-400 pb-3 rounded-t-lg pt-[120px] text-lg pl-5 font-normal'>
-                        <p className='cursor-pointer'>
+                        <p className='cursor-pointer hover:text-green-700'>
                             <CategoryOutlinedIcon fontSize='medium' className='mr-2 '/>
                             {item.category}
                         </p>
@@ -73,12 +73,13 @@ const ProductItem = ({product}:any) => {
                             {parseInt(item.price)}{'K'}
                         </p>
                     </div>
+                
                     <div className='grid grid-cols-2 p-3 items-center text-center font-medium bg-slate-200 rounded-b-lg'>
-                        <div className=' rounded-lg hover:bg-gradient-to-br from-green-300 to-blue-600 p-2 mr-2'>
-                            <button className='font-bold hover:text-white' onClick={()=> handleAddCart(item)}>ADD CART</button>
+                        <div >
+                            <button className='font-bold hover:text-white hover:bg-gradient-to-br from-orange-300 to-gray-600 px-6 py-2 rounded-lg' onClick={()=> handleAddCart(item)}>ADD CART</button>
                         </div>
-                        <div className='rounded-lg hover:bg-gradient-to-br from-orange-300 to-gray-600 p-2'>
-                            <button className='font-bold hover:text-white' onClick={()=> route.push('/Products/' + item._id)}>VIEW</button>
+                        <div className=''>
+                            <button className='font-bold hover:text-white hover:bg-gradient-to-br from-orange-300 to-gray-600 px-10 py-2 rounded-lg' onClick={()=> route.push('/Products/' + item._id)}>VIEW</button>
                         </div>
                     </div>
                 </div>
